@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#b71c1c;--pri2:#d32f2f;--pri-soft:#fde8e8;--bg:#fdf5f5;--card:#fff;--side:#fff;--text:#2d2d2d;--muted:#777;--line:#f1dddd;--thead:#fbf0f0;--input:#fff}
+body.dark{--bg:#121418;--card:#1c1f26;--side:#181b21;--text:#e9e9e9;--muted:#9aa0a6;--line:#2c313a;--thead:#232831;--input:#14171c;--pri-soft:#3a1d1f}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Sarabun',sans-serif;font-size:15px;background:var(--bg);color:var(--text)}
+.hidden{display:none!important}
+.topbar{position:fixed;top:0;left:0;right:0;height:68px;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:3px solid #ef9a9a;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #ffcdd2;flex-shrink:0}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand h1{margin:0;font-size:18px;font-weight:700;white-space:nowrap}
+.brand small{display:block;font-size:12.5px;opacity:.95}
+.top-right{display:flex;align-items:center;gap:10px;font-size:14px}
+.user-label{font-weight:600;white-space:nowrap}
+.role-tag{background:rgba(255,255,255,.22);border-radius:20px;padding:1px 9px;font-size:12px;margin-left:6px;font-weight:500}
+.btn-top{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:6px;padding:7px 12px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer}
+.btn-top:hover{background:rgba(255,255,255,.3)}
+.hamburger{display:none}
+.sidebar{position:fixed;top:68px;left:0;bottom:0;width:230px;background:var(--side);border-right:1px solid var(--line);padding:14px 8px;overflow-y:auto;z-index:15}
+.nav-sec{font-size:12.5px;color:var(--muted);padding:12px 12px 4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;cursor:pointer;color:var(--text);margin:2px 0;user-select:none}
+.nav-item:hover{background:var(--pri-soft)}
+.nav-item.active{background:var(--pri);color:#fff;font-weight:600}
+.nav-badge{margin-left:auto;background:#ef6c00;color:#fff;border-radius:20px;font-size:12px;padding:1px 8px;font-weight:700}
+.nav-item.active .nav-badge{background:#fff;color:var(--pri)}
+.main{margin-left:230px;padding:88px 22px 30px}
+.page-title{font-size:20px;font-weight:700;margin:4px 0 16px}
+.head-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{margin:0 0 12px;font-size:16px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.input{height:42px;border:1px solid var(--line);border-radius:6px;padding:0 12px;font-family:inherit;font-size:15px;background:var(--input);color:var(--text);outline:none}
+.input:focus{border-color:var(--pri2);box-shadow:0 0 0 3px rgba(211,47,47,.12)}
+.input[readonly],.input:disabled{opacity:.7}
+textarea.input{height:auto;padding:10px 12px;resize:vertical}
+input[type=file].input{padding-top:8px}
+.grow{flex:1;min-width:200px}
+.btn{height:42px;border:0;border-radius:6px;padding:0 16px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:hover{background:#9a1515}
+.btn-light{background:var(--thead);color:var(--text);border:1px solid var(--line)}
+.btn-sm{height:30px;padding:0 10px;font-size:13px;font-weight:600;border-radius:5px}
+.btn-ok{background:#2e7d32;color:#fff}
+.btn-info{background:#1565c0;color:#fff}
+.btn-del{background:#fff0f0;color:#c62828;border:1px solid #f5c2c2}
+.table-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:1000px}
+.tbl.compact{min-width:700px}
+.tbl th{background:var(--thead);color:var(--muted);font-weight:500;text-align:left;padding:11px 12px;font-size:14.5px;white-space:nowrap;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14.5px}
+.tbl tr:hover td{background:rgba(183,28,28,.03)}
+.tbl tr.row-over td{background:rgba(198,40,40,.07)}
+.tbl tr.row-today td{background:rgba(239,108,0,.07)}
+.tbl tr.row-off td{opacity:.55}
+.empty{text-align:center;color:var(--muted);padding:30px!important}
+.nowrap{white-space:nowrap}
+.subject{min-width:220px}
+.sub{font-size:12.5px;color:var(--muted)}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.b-gray{background:#eceff1;color:#546e7a}.b-yellow{background:#fff8e1;color:#b26a00}.b-orange{background:#fff3e0;color:#e65100}
+.b-red{background:#ffebee;color:#c62828}.b-blue{background:#e3f2fd;color:#1565c0}.b-green{background:#e8f5e9;color:#2e7d32}.b-purple{background:#f3e5f5;color:#6a1b9a}
+.g-list{display:flex;flex-wrap:wrap;gap:4px;min-width:160px}
+.footer-info{color:var(--muted);font-size:13px;margin-top:10px}
+.link{color:var(--pri2);text-decoration:none;font-weight:600;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 12px;z-index:50;overflow-y:auto}
+.modal-box{background:var(--card);border-radius:12px;width:100%;max-width:720px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.modal-head h3{margin:0;font-size:18px}
+.x{background:none;border:0;font-size:26px;cursor:pointer;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.form-grid .full{grid-column:1/-1}
+.form-grid label{display:block;font-size:13.5px;color:var(--muted);margin-bottom:4px}
+.form-grid .input{width:100%}
+.chk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--input)}
+.form-grid label.chk{display:flex;align-items:center;gap:8px;margin:0;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--text);font-size:14.5px}
+.form-grid label.chk:hover{background:var(--pri-soft)}
+.chk input{width:17px;height:17px;accent-color:var(--pri);flex-shrink:0}
+.req{color:#d32f2f}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--pri);border-radius:12px;padding:16px;cursor:pointer;transition:.15s}
+.stat:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.stat.sel{outline:2px solid var(--pri);outline-offset:-1px}
+.stat .n{font-size:28px;font-weight:700;color:var(--pri)}
+.stat .n small{font-size:14px;font-weight:600}
+.stat .l{color:var(--muted);font-size:14px}
+.stat .d{color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.bar-row{margin:10px 0;cursor:pointer}
+.bar-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px;gap:8px}
+.bar{height:10px;background:var(--thead);border-radius:10px;overflow:hidden;display:flex}
+.bar span{display:block;height:100%}
+.legend{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.steps{display:flex;align-items:center}
+.sdot{width:24px;height:24px;border-radius:50%;background:var(--thead);border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.sdot.on{color:#fff;border-color:transparent}
+.sline{width:14px;height:2px;background:var(--line);display:inline-block}
+.tl{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.tl:last-child{border-bottom:0}
+.tl-dot{width:12px;height:12px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.lv-calc{background:var(--thead);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+.role-desc{background:var(--thead);border-radius:8px;padding:8px 12px;margin-top:6px;font-size:13px;color:var(--muted)}
+.loading{position:fixed;inset:0;background:rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;z-index:100}
+.spinner{width:44px;height:44px;border:4px solid #f3c6c6;border-top-color:var(--pri);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;right:24px;background:#323232;color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transform:translateY(20px);transition:.25s;z-index:200;pointer-events:none;max-width:360px}
+.toast.show{opacity:1;transform:none}.toast.err{background:#c62828}.toast.ok{background:#2e7d32}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#b71c1c,#7f0000)}
+.login-card{background:var(--card);width:100%;max-width:400px;border-radius:14px;padding:30px;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center}
+.login-card .logo{width:72px;height:72px;margin:0 auto 10px}
+.login-card .input{width:100%;margin-bottom:12px}
+.login-card .btn{width:100%}
+.detail th{width:170px;background:var(--thead)}
+.detail td{white-space:pre-line}
+.pager{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+.pager button:disabled{opacity:.4;cursor:not-allowed}
+.foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+@media(max-width:900px){
+  .hamburger{display:inline-block}
+  .sidebar{transform:translateX(-100%);transition:.2s}
+  .sidebar.open{transform:none;box-shadow:4px 0 20px rgba(0,0,0,.15)}
+  .main{margin-left:0;padding:84px 12px 20px}
+  .brand small,.role-tag,.btn-top.hide-m{display:none}
+  .user-label{max-width:120px;overflow:hidden;text-overflow:ellipsis}
+  .brand h1{font-size:15px}
+  .form-grid,.grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle"></h3><button class="x" onclick="closeModal()">×</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div id="loading" class="loading hidden"><div class="spinner"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const PAGES = {
+  home:      { title: 'หน้าหลัก' },
+  pending:   { title: 'แดชบอร์ดรอดำเนินการ' },
+  incoming:  { title: 'ทะเบียนหนังสือรับ', type: 'incoming' },
+  outgoing:  { title: 'ทะเบียนหนังสือส่ง', type: 'outgoing' },
+  circular:  { title: 'ทะเบียนหนังสือเวียน', type: 'circular' },
+  memo:      { title: 'ทะเบียนบันทึกข้อความ', type: 'memo' },
+  order:     { title: 'ทะเบียนคำสั่ง', type: 'order' },
+  announce:  { title: 'ทะเบียนประกาศ', type: 'announce' },
+  personnel: { title: 'ทะเบียนประวัติบุคลากร' },
+  leave:     { title: 'การลา' },
+  study:     { title: 'ทะเบียนการลาศึกษาต่อ' },
+  send:      { title: 'ส่งหนังสือถึงกลุ่มงานบุคคล' },
+  all:       { title: 'หนังสือทั้งหมด', type: 'all' },
+  users:     { title: 'จัดการผู้ใช้งาน', roles: ['admin'] }
+};
+const NAV = [
+  { p: 'home', i: '🏠', t: 'หน้าหลัก' },
+  { p: 'pending', i: '⏳', t: 'รอดำเนินการ', badge: 'navBadge' },
+  { sec: 'ทะเบียนหนังสือ' },
+  { p: 'incoming', i: '📥', t: 'ทะเบียนหนังสือรับ' },
+  { p: 'outgoing', i: '📤', t: 'ทะเบียนหนังสือส่ง' },
+  { p: 'circular', i: '📢', t: 'หนังสือเวียน' },
+  { p: 'memo', i: '📝', t: 'บันทึกข้อความ' },
+  { p: 'order', i: '📜', t: 'คำสั่ง' },
+  { p: 'announce', i: '📣', t: 'ประกาศ' },
+  { sec: 'งานบุคคล' },
+  { p: 'personnel', i: '📇', t: 'ทะเบียนประวัติบุคลากร' },
+  { p: 'leave', i: '🗓️', t: 'การลา', badge: 'navLeave' },
+  { p: 'study', i: '🎓', t: 'การลาศึกษาต่อ' },
+  { sec: 'ส่งหนังสือ' },
+  { p: 'send', i: '📨', t: 'ส่งหนังสือถึงกลุ่มงานบุคคล' },
+  { p: 'all', i: '🗂️', t: 'หนังสือทั้งหมด' },
+  { sec: 'ผู้ดูแลระบบ', roles: ['admin'] },
+  { p: 'users', i: '👥', t: 'จัดการผู้ใช้งาน', roles: ['admin'] }
+];
+const HIDE_FIELDS = {
+  announce: ['docNo', 'fromOrg', 'toOrg', 'speed'],
+  order: ['fromOrg', 'toOrg', 'speed']
+};
+const ROLE_DESC = {
+  admin: 'จัดการผู้ใช้งานและสิทธิ์ เห็นทุกเมนู แก้ไข/ลบข้อมูลได้ทั้งหมด',
+  staff: 'ลงรับ/มอบหมายหนังสือ พิจารณาอนุมัติใบลา ดูและจัดการการลาศึกษาต่อและประวัติบุคลากร',
+  user: 'ส่งหนังสือ เขียนใบลา ยื่นลาศึกษาต่อ และเห็นเฉพาะรายการของตนเอง'
+};
+const ROLE_CLS = { admin: 'b-red', staff: 'b-blue', user: 'b-gray' };
+const ROLE_ICON = { admin: '🛡️', staff: '📂', user: '👤' };
+const ROLE_COLOR = { admin: '#c62828', staff: '#1565c0', user: '#546e7a' };
+const DEGREES = ['ปริญญาตรี', 'ประกาศนียบัตรบัณฑิต', 'ปริญญาโท', 'ปริญญาเอก', 'อื่น ๆ'];
+const STEP_COLORS = ['#1565c0', '#ef6c00', '#6a1b9a', '#2e7d32'];
+const STEP_HINTS = [
+  'แนบบันทึกขออนุญาตไปสมัครสอบ / ประกาศรับสมัคร',
+  'แนบผลการสอบคัดเลือก / หนังสือตอบรับ / บันทึกขออนุญาตลาศึกษาต่อ',
+  'แนบหลักฐานการสำเร็จการศึกษา (ใบรับรอง / ใบแสดงผลการศึกษา / ปริญญาบัตร)',
+  'แนบหนังสือรายงานการเพิ่มวุฒิที่ สพม.สคสส.'
+];
+const LV_CLS = {
+  'รออนุมัติ [ขั้นที่ 1: หัวหน้างาน]': 'b-orange',
+  'รออนุมัติ [ขั้นที่ 2: หัวหน้างานการลา]': 'b-orange',
+  'รออนุมัติ [ขั้นที่ 3: รอง ผอ.กลุ่มบริหารงานบุคคล]': 'b-orange',
+  'รออนุมัติ [ขั้นที่ 4: ผู้อำนวยการโรงเรียน]': 'b-yellow',
+  'อนุมัติแล้ว': 'b-green', 'ไม่อนุมัติ': 'b-red', 'ยกเลิก': 'b-gray'
+};
+const LV_ICON = { 'ลาป่วย': '🤒', 'ลากิจส่วนตัว': '📝', 'ลาพักผ่อน': '🏖️', 'ลาคลอดบุตร': '👶', 'ลาไปช่วยเหลือภริยาที่คลอดบุตร': '🍼', 'ลาอุปสมบท/ประกอบพิธีฮัจย์': '🙏', 'ลาอื่น ๆ': '📄' };
+const LEAVE_CAL = ['ลาคลอดบุตร', 'ลาอุปสมบท/ประกอบพิธีฮัจย์'];
+const LEAVE_MAIN = ['ลาป่วย', 'ลากิจส่วนตัว', 'ลาพักผ่อน'];
+const SPEED_CLS = { 'ปกติ': 'b-gray', 'ด่วน': 'b-yellow', 'ด่วนมาก': 'b-orange', 'ด่วนที่สุด': 'b-red' };
+const STATUS_CLS = { 'รอลงรับ': 'b-orange', 'ลงรับแล้ว': 'b-blue', 'กำลังดำเนินการ': 'b-yellow', 'เสร็จสิ้น': 'b-green', 'ยกเลิก': 'b-gray' };
+const TM = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const PF_LABEL = { all: 'ทั้งหมด', waiting: 'รอลงรับ', received: 'ลงรับแล้ว', progress: 'กำลังดำเนินการ', overdue: 'เกินกำหนด', today: 'ครบกำหนดวันนี้', urgent: 'ด่วนมาก/ด่วนที่สุด' };
+
+const S = { token: localStorage.getItem('eds_token') || '', user: null, cfg: null, pub: null, page: 'home', type: '', list: [], pend: null };
+let PF = { key: 'all', q: '', group: '', type: '' };
+let SF = { q: '', step: '' };
+let LF = { q: '', type: '', status: '', fy: null };
+let UF = { q: '', role: '' };
+let PF_PERSON = { q: '', group: '' };
+let autoTimer = null;
+
+const PAGE_SIZE = 10;
+let PG = 1;
+function goPage(p){ PG = p; drawTable(); }
+function pagerHtml(total){
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (pages <= 1) return '';
+  let s = Math.max(1, PG - 2), e = Math.min(pages, s + 4);
+  s = Math.max(1, e - 4);
+  let h = `<button class="btn btn-sm btn-light" ${PG === 1 ? 'disabled' : ''} onclick="goPage(${PG - 1})">‹ ก่อนหน้า</button>`;
+  for (let p = s; p <= e; p++) {
+    h += `<button class="btn btn-sm ${p === PG ? 'btn-pri' : 'btn-light'}" onclick="goPage(${p})">${p}</button>`;
+  }
+  h += `<button class="btn btn-sm btn-light" ${PG === pages ? 'disabled' : ''} onclick="goPage(${PG + 1})">ถัดไป ›</button>`;
+  return `<div class="pager">${h}</div>`;
+}
+
+const $ = s => document.querySelector(s);
+const mainEl = () => document.getElementById('main');
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function opts(arr, sel){ return (arr || []).map(v => `<option value="${esc(v)}" ${v === sel ? 'selected' : ''}>${esc(v)}</option>`).join(''); }
+function today(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function thDate(s){
+  if (!s) return '-';
+  const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return esc(s);
+  const y = +m[1];
+  return `${+m[3]} ${TM[+m[2]-1]} ${y > 2400 ? y : y + 543}`;
+}
+function thDateTime(s){ if(!s) return '-'; const t = String(s).match(/\s(\d{2}:\d{2})/); return thDate(s) + (t ? ' ' + t[1] + ' น.' : ''); }
+function isStaff(){ return S.user && (S.user.role === 'admin' || S.user.role === 'staff'); }
+function isAdmin(){ return S.user && S.user.role === 'admin'; }
+function canSee(item){ return !item.roles || (S.user && item.roles.indexOf(S.user.role) >= 0); }
+function isAnn(r){ return r && r.type === 'announce'; }
+function isOrd(r){ return r && r.type === 'order'; }
+function isMemo(r){ return r && r.type === 'memo'; }
+function isNoParty(r){ return isAnn(r) || isOrd(r); }
+function speedBadge(v){ return v ? `<span class="badge ${SPEED_CLS[v]||'b-gray'}">${esc(v)}</span>` : '-'; }
+function statusBadge(v){ return v ? `<span class="badge ${STATUS_CLS[v]||'b-gray'}">${esc(v)}</span>` : '-'; }
+function roleBadge(r){ return `<span class="badge ${ROLE_CLS[r]||'b-gray'}">${ROLE_ICON[r]||''} ${esc((S.cfg.roles||{})[r]||r)}</span>`; }
+function fileLink(r){ return r.fileUrl ? `<a class="link nowrap" href="${esc(r.fileUrl)}" target="_blank" rel="noopener">📎 เปิดไฟล์</a>` : '-'; }
+function party(r){ if (isNoParty(r)) return '-'; return (r.type === 'incoming' ? (r.fromOrg || r.toOrg) : (r.toOrg || r.fromOrg)) || '-'; }
+function docNoOf(r){ return isAnn(r) ? '-' : (r.docNo || '-'); }
+function docNoLabel(r){ return isOrd(r) ? 'เลขที่คำสั่ง' : (isMemo(r) ? 'เลขที่บันทึกข้อความ' : 'เลขที่หนังสือ'); }
+function speedOf(r){ return isNoParty(r) ? '-' : speedBadge(r.speed); }
+
+function groupsOf(r){ return String((r && r.groupName) || '').split(/\s*,\s*/).map(x => x.trim()).filter(Boolean); }
+function hasGroup(r, g){ return groupsOf(r).indexOf(g) >= 0; }
+function groupHtml(r){
+  const g = groupsOf(r);
+  return g.length ? `<div class="g-list">${g.map(x => `<span class="badge b-blue">${esc(x)}</span>`).join('')}</div>` : '';
+}
+function groupPicker(selected){
+  const sel = selected || [];
+  const list = (S.cfg.groups || []).slice();
+  sel.forEach(g => { if (list.indexOf(g) < 0) list.push(g); });
+  return `<div class="chk-grid" id="gPick">${list.map(g =>
+    `<label class="chk"><input type="checkbox" value="${esc(g)}" ${sel.indexOf(g) >= 0 ? 'checked' : ''}><span>${esc(g)}</span></label>`).join('')}</div>
+    <div class="sub" style="margin-top:6px"><a class="link" onclick="pickAll(true)">☑ เลือกทั้งหมด</a> · <a class="link" onclick="pickAll(false)">ล้าง</a></div>`;
+}
+function pickAll(on){ document.querySelectorAll('#gPick input').forEach(c => c.checked = on); }
+function pickedGroups(){ return Array.from(document.querySelectorAll('#gPick input:checked')).map(c => c.value); }
+
+function logoHtml(){
+  const url = (S.cfg && S.cfg.app.logo) || (S.pub && S.pub.logo);
+  if (url) return `<img src="${esc(url)}" alt="logo">`;
+  return `<svg viewBox="0 0 48 48" width="80%" height="80%"><circle cx="24" cy="24" r="22" fill="#b71c1c"/><path d="M15 12h13l6 6v18H15z" fill="#fff"/><path d="M28 12v6h6" fill="#f3c6c6"/><path d="M19 24h11M19 28h11M19 32h7" stroke="#b71c1c" stroke-width="2"/></svg>`;
+}
+
+let loadCount = 0;
+function showLoading(on){ loadCount += on ? 1 : -1; if (loadCount < 0) loadCount = 0; $('#loading').classList.toggle('hidden', loadCount === 0); }
+let tTimer;
+function toast(m, type){ const t = $('#toast'); t.textContent = m; t.className = 'toast show ' + (type || ''); clearTimeout(tTimer); tTimer = setTimeout(() => t.className = 'toast', 3500); }
+function openModal(title, html){ $('#modalTitle').textContent = title; $('#modalBody').innerHTML = html; $('#modal').classList.remove('hidden'); }
+function closeModal(){ $('#modal').classList.add('hidden'); $('#modalBody').innerHTML = ''; }
+
+function confirmBox(title, msg, okText, danger, icon, sub){
+  return new Promise(res => {
+    openModal(title, `
+      <div style="text-align:center;padding:10px 0 20px">
+        ${icon ? `<div style="font-size:42px;margin-bottom:10px">${icon}</div>` : ''}
+        <div style="font-size:16px;font-weight:600;margin-bottom:6px">${esc(msg)}</div>
+        ${sub ? `<div class="sub">${esc(sub)}</div>` : ''}
+      </div>
+      <div class="form-actions" style="justify-content:center;gap:12px">
+        <button type="button" class="btn btn-light" style="min-width:110px" id="cbNo">ยกเลิก</button>
+        <button type="button" class="btn btn-pri" style="min-width:110px${danger ? ';background:#c62828' : ''}" id="cbYes">${esc(okText || 'ตกลง')}</button>
+      </div>`);
+    $('#cbNo').onclick = () => { closeModal(); res(false); };
+    $('#cbYes').onclick = () => { closeModal(); res(true); };
+  });
+}
+
+function api(fn, ...args){
+  return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](...args));
+}
+async function call(fn, ...args){
+  showLoading(true);
+  try { return await api(fn, ...args); }
+  catch (e) { handleErr(e); throw e; }
+  finally { showLoading(false); }
+}
+function handleErr(e){
+  const m = (e && e.message) || String(e);
+  if (m.indexOf('SESSION_EXPIRED') >= 0) { doLogoutLocal(); toast('หมดเวลาการใช้งาน กรุณาเข้าสู่ระบบใหม่', 'err'); }
+  else toast(m.replace(/^Error:\s*/, ''), 'err');
+}
+function readFile(input){
+  return new Promise((res, rej) => {
+    const f = input && input.files && input.files[0];
+    if (!f) return res(null);
+    const max = ((S.cfg && S.cfg.app.maxFileMb) || 10) * 1024 * 1024;
+    if (f.size > max) return rej(new Error('ไฟล์ต้องไม่เกิน ' + (max/1024/1024) + ' MB'));
+    const r = new FileReader();
+    r.onload = () => res({ name: f.name, mimeType: f.type, base64: String(r.result).split(',')[1] });
+    r.onerror = () => rej(new Error('อ่านไฟล์ไม่สำเร็จ'));
+    r.readAsDataURL(f);
+  });
+}
+
+function setBadgeEl(id, n){ const b = document.getElementById(id); if (!b) return; b.textContent = n; b.classList.toggle('hidden', !n); }
+function setBadge(n){ setBadgeEl('navBadge', n); }
+function setLeaveBadge(n){ setBadgeEl('navLeave', n); }
+function refreshBadge(){
+  if (!S.token) return;
+  api('getBadges', S.token).then(b => { setBadge(b.pending); setLeaveBadge(b.leave); }).catch(() => {});
+}
+function startAuto(){
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => {
+    if (!S.token) return;
+    const typing = document.activeElement && document.activeElement.id === 'pq';
+    if (S.page === 'pending' && $('#modal').classList.contains('hidden') && !typing) loadPending();
+    refreshBadge();
+  }, 120000);
+}
+function reloadPage(){
+  if (S.page === 'pending') loadPending();
+  else if (S.page === 'send') loadMine();
+  else if (S.page === 'home') renderHome();
+  else if (S.page === 'study') loadStudy();
+  else if (S.page === 'leave') loadLeave();
+  else if (S.page === 'personnel') loadPersonnel();
+  else if (S.page === 'users') loadUsers();
+  else loadDocs();
+  refreshBadge();
+}
+
+window.addEventListener('load', async () => {
+  if (localStorage.getItem('eds_theme') === 'dark') document.body.classList.add('dark');
+  showLoading(true);
+  try {
+    S.pub = await api('getPublicConfig');
+    if (S.token) {
+      const b = await api('getBootstrap', S.token);
+      startSession(b, localStorage.getItem('eds_page') || 'home');
+      return;
+    }
+  } catch (e) {
+    const m = (e && e.message) || '';
+    if (m.indexOf('SESSION_EXPIRED') < 0) toast(m, 'err');
+    localStorage.removeItem('eds_token'); S.token = '';
+  } finally { showLoading(false); }
+  renderLogin();
+});
+
+function startSession(b, page){
+  S.cfg = b; S.user = b.user;
+  renderShell(); setBadge(b.pendingCount || 0); setLeaveBadge(b.leavePending || 0); startAuto(); go(page);
+}
+
+function renderLogin(){
+  const p = S.pub || {};
+  document.getElementById('app').innerHTML = `
+  <div class="login-wrap"><form class="login-card" id="loginForm">
+    <div class="logo">${logoHtml()}</div>
+    <h2 style="margin:6px 0 2px;color:var(--pri)">${esc(p.name || 'ระบบสารบรรณอิเล็กทรอนิกส์')}</h2>
+    <div style="color:var(--muted);margin-bottom:20px;font-size:14px">${esc(p.org || '')}</div>
+    <input class="input" id="lu" placeholder="ชื่อผู้ใช้" autocomplete="username" required>
+    <input class="input" id="lp" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" required>
+    <button class="btn btn-pri" type="submit">เข้าสู่ระบบ</button>
+  </form></div>`;
+  $('#loginForm').onsubmit = async ev => {
+    ev.preventDefault();
+    try {
+      const r = await call('login', $('#lu').value, $('#lp').value);
+      S.token = r.token; localStorage.setItem('eds_token', r.token);
+      const b = await call('getBootstrap', S.token);
+      startSession(b, 'home');
+      toast('ยินดีต้อนรับ ' + S.user.fullName, 'ok');
+    } catch (e) {}
+  };
+}
+
+async function logout(){
+  const ok = await confirmBox('ยืนยันออกจากระบบ', 'คุณต้องการออกจากระบบใช่หรือไม่?', 'ออกจากระบบ', true, '🚪', 'คุณจะต้องเข้าสู่ระบบใหม่อีกครั้งเพื่อใช้งานในครั้งถัดไป');
+  if (!ok) return;
+  try { await api('logout', S.token); } catch (e) {}
+  doLogoutLocal();
+  toast('ออกจากระบบเรียบร้อย', 'ok');
+}
+function doLogoutLocal(){ S.token = ''; S.user = null; clearInterval(autoTimer); localStorage.removeItem('eds_token'); closeModal(); renderLogin(); }
+function toggleTheme(){ document.body.classList.toggle('dark'); localStorage.setItem('eds_theme', document.body.classList.contains('dark') ? 'dark' : 'light'); }
+function toggleSide(){ $('#sidebar').classList.toggle('open'); }
+
+function openChangePw(){
+  openModal('🔑 เปลี่ยนรหัสผ่าน', `
+  <form id="pwForm"><div class="form-grid">
+    <div class="full"><label>รหัสผ่านเดิม <span class="req">*</span></label><input type="password" class="input" name="old" required autocomplete="current-password"></div>
+    <div><label>รหัสผ่านใหม่ <span class="req">*</span></label><input type="password" class="input" name="nw" required minlength="4" autocomplete="new-password"></div>
+    <div><label>ยืนยันรหัสผ่านใหม่ <span class="req">*</span></label><input type="password" class="input" name="cf" required minlength="4" autocomplete="new-password"></div>
+  </div>
+  <div class="form-actions"><button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button><button type="submit" class="btn btn-pri">บันทึก</button></div></form>`);
+  $('#pwForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    if (fd.get('nw') !== fd.get('cf')) return toast('รหัสผ่านใหม่และการยืนยันไม่ตรงกัน', 'err');
+    try { await call('changePassword', S.token, fd.get('old'), fd.get('nw')); closeModal(); toast('เปลี่ยนรหัสผ่านเรียบร้อย', 'ok'); } catch (e) {}
+  };
+}
+
+function renderShell(){
+  const u = S.user, a = S.cfg.app;
+  document.getElementById('app').innerHTML = `
+  <header class="topbar">
+    <div class="brand">
+      <button class="btn-top hamburger" onclick="toggleSide()">☰</button>
+      <div class="logo">${logoHtml()}</div>
+      <div><h1>${esc(a.name)}</h1><small>${esc(a.org)}</small></div>
+    </div>
+    <div class="top-right">
+      <span class="user-label" title="${esc(u.username)}">👤 ${esc(u.fullName || u.username)}<span class="role-tag">${esc(S.cfg.roles[u.role] || u.role)}</span></span>
+      <button class="btn-top hide-m" title="เปลี่ยนรหัสผ่าน" onclick="openChangePw()">🔑</button>
+      <button class="btn-top hide-m" title="สลับโหมดสว่าง/มืด" onclick="toggleTheme()">🌓</button>
+      <button class="btn-top" onclick="logout()">ออกจากระบบ</button>
+    </div>
+  </header>
+  <nav class="sidebar" id="sidebar">
+    ${NAV.filter(canSee).map(n => n.sec ? `<div class="nav-sec">${n.sec}</div>` :
+      `<div class="nav-item" data-p="${n.p}" onclick="go('${n.p}')"><span>${n.i}</span><span>${n.t}</span>${n.badge ? `<span class="nav-badge hidden" id="${n.badge}">0</span>` : ''}</div>`).join('')}
+  </nav>
+  <main class="main" id="main"></main>`;
+}
+
+function go(page, keepFilter){
+  if (!PAGES[page] || !canSee(PAGES[page])) page = 'home';
+  if (page === 'pending' && !keepFilter) PF = { key: 'all', q: '', group: '', type: '' };
+  S.page = page; localStorage.setItem('eds_page', page);
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.p === page));
+  $('#sidebar').classList.remove('open');
+  if (page === 'home') renderHome();
+  else if (page === 'pending') renderPending();
+  else if (page === 'send') renderSend();
+  else if (page === 'study') renderStudy();
+  else if (page === 'leave') renderLeave();
+  else if (page === 'personnel') renderPersonnel();
+  else if (page === 'users') renderUsers();
+  else renderRegister(page);
+}
+function goPending(key){ PF = { key: key || 'all', q: '', group: '', type: '' }; go('pending', true); }
+
+async function renderHome(){
+  S.type = '';
+  mainEl().innerHTML = `<h2 class="page-title">สวัสดี ${esc(S.user.fullName)} 👋</h2><div id="homeBody"><div class="card empty">กำลังโหลด...</div></div>`;
+  let d;
+  try { d = await api('getDashboard', S.token); } catch (e) { handleErr(e); return; }
+  if (S.page !== 'home') return;
+  S.list = d.recent;
+  setBadge(d.pendingTotal);
+  const cards = [['incoming','📥','หนังสือรับ'],['outgoing','📤','หนังสือส่ง'],['circular','📢','หนังสือเวียน'],['memo','📝','บันทึกข้อความ'],['order','📜','คำสั่ง'],['announce','📣','ประกาศ'],['personnel','📇','ทะเบียนประวัติ'],['leave','🗓️','การลา'],['study','🎓','การลาศึกษาต่อ']];
+  $('#homeBody').innerHTML = `
+  <div class="stats">
+    ${cards.map(c => `<div class="stat" onclick="go('${c[0]}')"><div class="l">${c[1]} ${c[2]}</div><div class="n">${d.counts[c[0]] || 0}</div></div>`).join('')}
+    <div class="stat" onclick="goPending('all')" style="border-left-color:#ef6c00"><div class="l">⏳ งานรอดำเนินการ</div><div class="n" style="color:#ef6c00">${d.pendingTotal}</div></div>
+    <div class="stat" onclick="goPending('overdue')" style="border-left-color:#c62828"><div class="l">⛔ เกินกำหนด</div><div class="n" style="color:#c62828">${d.overdue}</div></div>
+  </div>
+  <div class="card"><h3>หนังสือล่าสุด</h3>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>ประเภท</th><th>เลขที่</th><th>ลงวันที่</th><th>จาก/ถึง</th><th>เรื่อง</th><th>ชั้นความเร็ว</th><th>สถานะ</th><th>ไฟล์แนบ</th><th></th>
+    </tr></thead><tbody>
+    ${d.recent.length ? d.recent.map(r => `<tr>
+      <td><span class="badge b-purple">${esc(r.typeLabel)}</span></td>
+      <td class="nowrap">${esc(docNoOf(r))}</td><td class="nowrap">${thDate(r.docDate)}</td>
+      <td>${esc(party(r))}</td><td><div class="subject">${esc(r.subject)}</div></td>
+      <td>${speedOf(r)}</td><td>${isNoParty(r) ? '-' : statusBadge(r.status)}</td><td>${fileLink(r)}</td>
+      <td><button class="btn btn-sm btn-light" onclick="viewDoc('${r.id}')">ดู</button></td>
+    </tr>`).join('') : `<tr><td colspan="9" class="empty">ไม่พบข้อมูล</td></tr>`}
+    </tbody></table></div>
+  </div>`;
+}
+
+function renderPending(){
+  S.type = 'pending'; S.list = []; S.pend = null;
+  mainEl().innerHTML = `
+  <div class="head-row">
+    <h2 class="page-title" style="margin:0">แดชบอร์ดรอดำเนินการ</h2>
+    <div class="nowrap"><span class="sub" id="pUpdated"></span>
+      <button class="btn btn-sm btn-light" onclick="loadPending(true)">⟳ รีเฟรช</button></div>
+  </div>
+  <div id="pBody"><div class="card empty">กำลังโหลด...</div></div>`;
+  loadPending();
+}
+
+async function loadPending(withSpinner){
+  let d;
+  if (withSpinner) showLoading(true);
+  try { d = await api('getPendingDashboard', S.token); }
+  catch (e) { handleErr(e); return; }
+  finally { if (withSpinner) showLoading(false); }
+  if (S.page !== 'pending') return;
+  S.pend = d; S.list = d.items;
+  setBadge(d.summary.total);
+  const n = new Date();
+  if ($('#pUpdated')) $('#pUpdated').textContent = 'อัปเดตล่าสุด ' + String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0') + ' น. ';
+  drawPending();
+}
+
+function setPF(key){ PF.key = key; drawPending(); }
+function pickGroup(name){ PF.group = (name === 'ยังไม่มอบหมาย') ? '__none' : name; drawPending(); }
+function pickType(t){ PF.type = t; drawPending(); }
+function clearPF(){ PF = { key: 'all', q: '', group: '', type: '' }; drawPending(); }
+
+function drawPending(){
+  const d = S.pend; if (!d || !$('#pBody')) return;
+  const s = d.summary, types = S.cfg.types, typeKeys = Object.keys(types);
+  const cards = [
+    ['all','📋','งานค้างทั้งหมด', s.total, '#b71c1c'],
+    ['waiting','📥','รอลงรับ', s.waiting, '#ef6c00'],
+    ['received','📌','ลงรับแล้ว (รอดำเนินการ)', s.received, '#1565c0'],
+    ['progress','⚙️','กำลังดำเนินการ', s.inProgress, '#b26a00'],
+    ['overdue','⛔','เกินกำหนด', s.overdue, '#c62828'],
+    ['today','📅','ครบกำหนดวันนี้', s.dueToday, '#6a1b9a'],
+    ['urgent','🚨','ด่วนมาก / ด่วนที่สุด', s.urgent, '#d84315']
+  ];
+  const maxG = Math.max(1, ...d.byGroup.map(g => g.count));
+  const maxT = Math.max(1, ...typeKeys.map(k => d.byType[k] || 0));
+  const filtered = PF.key !== 'all' || PF.group || PF.type || PF.q;
+
+  $('#pBody').innerHTML = `
+  <div class="stats">
+    ${cards.map(c => `<div class="stat ${PF.key === c[0] ? 'sel' : ''}" style="border-left-color:${c[4]}" onclick="setPF('${c[0]}')">
+      <div class="l">${c[1]} ${c[2]}</div><div class="n" style="color:${c[4]}">${c[3]}</div></div>`).join('')}
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>งานค้างแยกตามกลุ่มงาน</h3>
+      ${d.byGroup.length ? d.byGroup.map(g => `
+        <div class="bar-row" data-g="${esc(g.name)}" onclick="pickGroup(this.dataset.g)">
+          <div class="bar-label"><span>${esc(g.name)}</span><span><b>${g.count}</b>${g.overdue ? ` <span class="badge b-red">เกิน ${g.overdue}</span>` : ''}</span></div>
+          <div class="bar"><span style="width:${g.overdue / maxG * 100}%;background:#c62828"></span><span style="width:${(g.count - g.overdue) / maxG * 100}%;background:#1e88e5"></span></div>
+        </div>`).join('') + `<div class="legend"><span><i style="background:#c62828"></i>เกินกำหนด</span><span><i style="background:#1e88e5"></i>อยู่ในกำหนด</span></div>
+        <div class="sub" style="margin-top:6px">* หนังสือที่มอบหมายหลายกลุ่ม จะนับให้ทุกกลุ่ม</div>`
+      : '<div class="empty">ไม่มีงานค้าง 🎉</div>'}
+    </div>
+    <div class="card"><h3>งานค้างแยกตามประเภทหนังสือ</h3>
+      ${typeKeys.map(k => `
+        <div class="bar-row" onclick="pickType('${k}')">
+          <div class="bar-label"><span>${esc(types[k])}</span><b>${d.byType[k] || 0}</b></div>
+          <div class="bar"><span style="width:${(d.byType[k] || 0) / maxT * 100}%;background:var(--pri)"></span></div>
+        </div>`).join('')}
+      <div class="sub" style="margin-top:10px">กำหนดเสร็จอัตโนมัติ: ${Object.keys(S.cfg.app.sla || {}).map(k => esc(k) + ' ' + S.cfg.app.sla[k] + ' วัน').join(' · ')}</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="head-row" style="margin-bottom:12px">
+      <h3 style="margin:0">รายการรอดำเนินการ <span class="badge b-purple">${PF_LABEL[PF.key]}</span></h3>
+      ${filtered ? `<a class="link" onclick="clearPF()">✕ ล้างตัวกรอง</a>` : ''}
+    </div>
+    <div class="toolbar">
+      <input id="pq" class="input grow" placeholder="ค้นหาเลขที่ / เรื่อง / หน่วยงาน" value="${esc(PF.q)}">
+      <select id="pt" class="input"><option value="">ทุกประเภท</option>${typeKeys.map(k => `<option value="${k}" ${PF.type === k ? 'selected' : ''}>${esc(types[k])}</option>`).join('')}</select>
+      <select id="pg" class="input"><option value="">ทุกกลุ่มงาน</option><option value="__none" ${PF.group === '__none' ? 'selected' : ''}>ยังไม่มอบหมาย</option>${opts(S.cfg.groups, PF.group)}</select>
+    </div>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>ประเภท</th><th>เลขรับ / เลขที่</th><th>เรื่อง</th><th>ชั้นความเร็ว</th><th>กลุ่มงานที่รับผิดชอบ</th><th>สถานะ</th><th>รอมาแล้ว</th><th>กำหนดเสร็จ</th><th>จัดการ</th>
+    </tr></thead><tbody id="ptbody"></tbody></table></div>
+    <div class="footer-info" id="pcount"></div>
+  </div>`;
+
+  $('#pq').oninput = e => { PF.q = e.target.value; drawPendingTable(); };
+  $('#pt').onchange = e => { PF.type = e.target.value; drawPendingTable(); };
+  $('#pg').onchange = e => { PF.group = e.target.value; drawPendingTable(); };
+  drawPendingTable();
+}
+
+function pendingFiltered(){
+  const q = (PF.q || '').trim().toLowerCase();
+  return S.list.filter(r => {
+    switch (PF.key) {
+      case 'waiting':  if (r.status !== 'รอลงรับ') return false; break;
+      case 'received': if (r.status !== 'ลงรับแล้ว') return false; break;
+      case 'progress': if (r.status !== 'กำลังดำเนินการ') return false; break;
+      case 'overdue':  if (!r.overdue) return false; break;
+      case 'today':    if (r.daysLeft !== 0) return false; break;
+      case 'urgent':   if (isNoParty(r) || (r.speed !== 'ด่วนมาก' && r.speed !== 'ด่วนที่สุด')) return false; break;
+    }
+    if (PF.group) {
+      if (PF.group === '__none') { if (groupsOf(r).length) return false; }
+      else if (!hasGroup(r, PF.group)) return false;
+    }
+    if (PF.type && r.type !== PF.type) return false;
+    if (q && ![r.regNo, r.docNo, r.fromOrg, r.toOrg, r.subject, r.groupName].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function dueBadge(r){
+  if (r.daysLeft === undefined) return '';
+  if (r.overdue) return `<span class="badge b-red">เกิน ${-r.daysLeft} วัน</span>`;
+  if (r.daysLeft === 0) return `<span class="badge b-orange">ครบวันนี้</span>`;
+  if (r.daysLeft <= 2) return `<span class="badge b-yellow">อีก ${r.daysLeft} วัน</span>`;
+  return `<span class="badge b-green">อีก ${r.daysLeft} วัน</span>`;
+}
+
+function pendingActions(r){
+  let h = `<button class="btn btn-sm btn-light" onclick="viewDoc('${r.id}')">ดู</button> `;
+  if (isStaff()) {
+    if (r.status === 'รอลงรับ' && r.type === 'incoming') {
+      h += `<button class="btn btn-sm btn-ok" onclick="receiveDoc('${r.id}')">ลงรับ</button> `;
+    } else {
+      if (r.status !== 'กำลังดำเนินการ') h += `<button class="btn btn-sm btn-info" onclick="quickStatus('${r.type}','${r.id}','กำลังดำเนินการ')">เริ่มดำเนินการ</button> `;
+      h += `<button class="btn btn-sm btn-ok" onclick="quickStatus('${r.type}','${r.id}','เสร็จสิ้น')">✓ เสร็จสิ้น</button> `;
+    }
+    h += `<button class="btn btn-sm btn-light" onclick="openAssign('${r.type}','${r.id}')">มอบหมาย</button>`;
+  }
+  return `<div class="nowrap">${h}</div>`;
+}
+
+function drawPendingTable(){
+  if (!$('#ptbody')) return;
+  const rows = pendingFiltered();
+  $('#ptbody').innerHTML = rows.length ? rows.map((r, i) => `
+    <tr class="${r.overdue ? 'row-over' : (r.daysLeft === 0 ? 'row-today' : '')}">
+      <td>${i + 1}</td>
+      <td><span class="badge b-purple">${esc(r.typeLabel)}</span></td>
+      <td class="nowrap">${r.regNo ? `<b>${esc(r.regNo)}</b><br>` : ''}<span class="sub">${esc(docNoOf(r))}</span></td>
+      <td><div class="subject">${esc(r.subject)}</div>${isNoParty(r) ? '' : `<div class="sub">${esc(party(r))}</div>`}</td>
+      <td>${speedOf(r)}</td>
+      <td>${groupsOf(r).length ? groupHtml(r) : '<span class="badge b-gray">ยังไม่มอบหมาย</span>'}</td>
+      <td>${statusBadge(r.status)}</td>
+      <td class="nowrap">${r.ageDays} วัน</td>
+      <td class="nowrap">${thDate(r.dueCalc)}<br>${dueBadge(r)}</td>
+      <td>${pendingActions(r)}</td>
+    </tr>`).join('')
+    : `<tr><td colspan="10" class="empty">${S.list.length ? 'ไม่พบข้อมูลตามตัวกรอง' : 'ไม่มีงานค้าง 🎉'}</td></tr>`;
+  $('#pcount').textContent = `แสดง ${rows.length} จาก ${S.list.length} รายการ`;
+}
+
+async function quickStatus(type, id, status){
+  if (status === 'เสร็จสิ้น' && !(await confirmBox('ยืนยันสถานะ', 'ยืนยันว่าดำเนินการเรื่องนี้เสร็จสิ้นแล้ว?', 'ยืนยัน', false, '✅'))) return;
+  try {
+    await call('updateStatus', S.token, type, id, { status: status });
+    toast('อัปเดตสถานะเป็น "' + status + '" เรียบร้อย', 'ok');
+    reloadPage();
+  } catch (e) {}
+}
+
+function openAssign(type, id){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  const multi = type === 'incoming';
+  const groupField = multi
+    ? `<div class="full"><label>มอบหมายกลุ่มงานที่รับผิดชอบ (เลือกได้หลายกลุ่ม)</label>${groupPicker(groupsOf(r))}</div>`
+    : `<div><label>มอบหมายกลุ่มงาน</label><select class="input" name="groupName"><option value="">- ไม่ระบุ -</option>${opts(S.cfg.groups, r.groupName)}</select></div>`;
+  openModal('มอบหมาย / อัปเดตสถานะ', `
+  <div class="sub" style="margin-bottom:12px"><b>${esc(r.typeLabel)}${r.regNo ? ' เลขรับ ' + esc(r.regNo) : ''}:</b> ${esc(r.subject)}</div>
+  <form id="asForm"><div class="form-grid">
+    <div><label>สถานะ</label><select class="input" name="status">${opts(S.cfg.statuses, r.status)}</select></div>
+    ${multi ? '' : groupField}
+    <div><label>กำหนดเสร็จ</label><input type="date" class="input" name="dueDate" value="${esc(r.dueDate || r.dueCalc || '')}"></div>
+    ${isNoParty(r) ? '<div></div>' : `<div><label>ชั้นความเร็ว</label><input class="input" value="${esc(r.speed || 'ปกติ')}" disabled></div>`}
+    ${multi ? groupField : ''}
+    <div class="full"><label>บันทึกความคืบหน้า / ข้อสั่งการ</label><textarea class="input" name="note" rows="3" placeholder="ข้อความจะถูกต่อท้ายในหมายเหตุ พร้อมวันเวลาและชื่อผู้บันทึก"></textarea></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">บันทึก</button>
+  </div></form>`);
+  $('#asForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const groups = multi ? pickedGroups() : (fd.get('groupName') || '');
+    const p = { status: fd.get('status'), groupName: groups, dueDate: fd.get('dueDate') || '', note: fd.get('note') || '' };
+    try {
+      await call('updateStatus', S.token, type, id, p);
+      closeModal();
+      toast(multi && groups.length ? 'มอบหมายให้ ' + groups.length + ' กลุ่มงานเรียบร้อย' : 'บันทึกเรียบร้อย', 'ok');
+      reloadPage();
+    } catch (e) {}
+  };
+}
+
+function columnsFor(type){
+  const ann = type === 'announce', ord = type === 'order', memo = type === 'memo', nop = ann || ord;
+  const c = [{ k: '#', l: '#' }];
+  if (type === 'incoming') c.push({ k: 'regNo', l: 'เลขรับ' });
+  if (!ann) c.push({ k: 'docNo', l: ord ? 'เลขที่คำสั่ง' : (memo ? 'เลขที่บันทึกข้อความ' : (type === 'all' ? 'เลขที่' : 'เลขที่หนังสือ')) });
+  c.push({ k: 'docDate', l: 'ลงวันที่' });
+  if (!nop) c.push({ k: 'party', l: 'จาก/ถึง' });
+  c.push({ k: 'subject', l: 'เรื่อง' });
+  if (!nop) c.push({ k: 'speed', l: 'ชั้นความเร็ว' });
+  if (!nop) c.push({ k: 'status', l: 'สถานะ' });
+  c.push({ k: 'file', l: 'ไฟล์แนบ' });
+  if (type === 'all') c.push({ k: 'typeLabel', l: 'ประเภท' });
+  c.push({ k: 'act', l: 'จัดการ' });
+  return c;
+}
+
+function cell(k, r, i){
+  switch (k) {
+    case '#': return i + 1;
+    case 'regNo': return `<span class="nowrap">${esc(r.regNo || '-')}</span>`;
+    case 'docNo': return `<span class="nowrap">${esc(docNoOf(r))}</span>`;
+    case 'docDate': return `<span class="nowrap">${thDate(r.docDate)}</span>`;
+    case 'party': return esc(party(r));
+    case 'subject': return `<div class="subject">${esc(r.subject)}</div>${groupsOf(r).length ? `<div style="margin-top:4px">${groupHtml(r)}</div>` : ''}`;
+    case 'speed': return speedOf(r);
+    case 'status': return isNoParty(r) ? '-' : statusBadge(r.status);
+    case 'file': return fileLink(r);
+    case 'typeLabel': return `<span class="badge b-purple">${esc(r.typeLabel)}</span>`;
+    case 'act': return actCell(r);
+  }
+  return '';
+}
+
+function actCell(r){
+  let h = `<button class="btn btn-sm btn-light" onclick="viewDoc('${r.id}')">ดู</button> `;
+  if (isStaff()) {
+    if (r.type === 'incoming' && r.status === 'รอลงรับ') h += `<button class="btn btn-sm btn-ok" onclick="receiveDoc('${r.id}')">ลงรับ</button> `;
+    if (r.type === 'incoming') h += `<button class="btn btn-sm btn-info" onclick="openAssign('incoming','${r.id}')">มอบหมาย</button> `;
+    h += `<button class="btn btn-sm btn-light" onclick="openDocForm('${r.type}','${r.id}')">แก้ไข</button> `;
+    h += `<button class="btn btn-sm btn-del" onclick="delDoc('${r.type}','${r.id}')">ลบ</button>`;
+  }
+  return `<div class="nowrap">${h}</div>`;
+}
+
+function renderRegister(page){
+  const p = PAGES[page], type = p.type;
+  S.type = type; S.list = [];
+  const cols = columnsFor(type);
+  const nop = type === 'announce' || type === 'order';
+  mainEl().innerHTML = `
+  <h2 class="page-title">${p.title}</h2>
+  <div class="card">
+    <div class="toolbar">
+      <input id="q" class="input grow" placeholder="${nop ? 'ค้นหาเลขที่ / เรื่อง' : 'ค้นหาเลขที่ / เรื่อง / หน่วยงาน'}">
+      ${nop ? '' : `<select id="fStatus" class="input"><option value="">ทุกสถานะ</option>${opts(S.cfg.statuses)}</select>`}
+      ${type === 'incoming' ? `<select id="fGroup" class="input"><option value="">ทุกกลุ่มงาน</option>${opts(S.cfg.groups)}</select>` : ''}
+      ${isStaff() ? `<button class="btn btn-pri" onclick="openDocForm('${type}')">+ เพิ่มหนังสือ</button>` : ''}
+    </div>
+    <div class="table-wrap"><table class="tbl ${nop ? 'compact' : ''}">
+      <thead><tr>${cols.map(c => `<th>${c.l}</th>`).join('')}</tr></thead>
+      <tbody id="tbody"><tr><td colspan="${cols.length}" class="empty">กำลังโหลด...</td></tr></tbody>
+    </table></div>
+    <div class="footer-info" id="countInfo"></div>
+  </div>`;
+  PG = 1;
+  $('#q').oninput = () => { PG = 1; drawTable(); };
+  if ($('#fStatus')) $('#fStatus').onchange = () => { PG = 1; drawTable(); };
+  if ($('#fGroup')) $('#fGroup').onchange = () => { PG = 1; drawTable(); };
+  loadDocs();
+}
+
+async function loadDocs(){
+  const type = S.type;
+  if (!PAGES[S.page] || !PAGES[S.page].type) return;
+  try {
+    const list = await api('listDocs', S.token, type);
+    if (S.type !== type) return;
+    S.list = list; drawTable();
+  } catch (e) { handleErr(e); }
+}
+
+function drawTable(){
+  if (!$('#tbody')) return;
+  const q = ($('#q').value || '').trim().toLowerCase();
+  const st = $('#fStatus') ? $('#fStatus').value : '';
+  const g = $('#fGroup') ? $('#fGroup').value : '';
+  const rows = S.list.filter(r =>
+    (!st || r.status === st) && (!g || hasGroup(r, g)) &&
+    (!q || [r.regNo, r.docNo, r.fromOrg, r.toOrg, r.subject, r.groupName, r.note].join(' ').toLowerCase().includes(q)));
+
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  if (PG > pages) PG = pages;
+  if (PG < 1) PG = 1;
+  const start = (PG - 1) * PAGE_SIZE;
+  const pageRows = rows.slice(start, start + PAGE_SIZE);
+
+  const cols = columnsFor(S.type);
+  $('#tbody').innerHTML = pageRows.length
+    ? pageRows.map((r, i) => '<tr>' + cols.map(c => `<td>${cell(c.k, r, start + i)}</td>`).join('') + '</tr>').join('')
+    : `<tr><td colspan="${cols.length}" class="empty">ไม่พบข้อมูล</td></tr>`;
+
+  const from = rows.length ? start + 1 : 0;
+  const to = Math.min(start + PAGE_SIZE, rows.length);
+  $('#countInfo').innerHTML = `<div class="foot-row">
+    <span>แสดง ${from}–${to} จาก ${rows.length} รายการ (หน้า ${PG}/${pages})</span>
+    ${pagerHtml(rows.length)}
+  </div>`;
+}
+
+function applyFormType(t){
+  const hide = (HIDE_FIELDS[t] || []).slice();
+  if (t === 'incoming') hide.push('grpSingle'); else hide.push('regNo', 'grpMulti');
+  document.querySelectorAll('#docForm [data-f]').forEach(el => el.classList.toggle('hidden', hide.indexOf(el.dataset.f) >= 0));
+  const lbl = $('#lblDocNo'); 
+  if (lbl) lbl.textContent = t === 'order' ? 'เลขที่คำสั่ง' : (t === 'memo' ? 'เลขที่บันทึกข้อความ' : 'เลขที่หนังสือ');
+  const inp = document.querySelector('#docForm [name=docNo]');
+  if (inp) inp.placeholder = t === 'incoming' ? 'เช่น ศธ 04xxx/123' : 'เว้นว่าง = ออกเลขอัตโนมัติ';
+}
+
+function openDocForm(type, id){
+  const d = id ? S.list.find(x => x.id === id) : null;
+  const r = d || { docDate: today(), speed: 'ปกติ' };
+  const chooseType = !d && type === 'all';
+  const t = chooseType ? 'incoming' : (d ? d.type : type);
+  openModal((d ? 'แก้ไข' : 'เพิ่ม') + (chooseType ? 'หนังสือ' : S.cfg.types[t]), `
+  <form id="docForm"><div class="form-grid">
+    ${chooseType ? `<div class="full"><label>ประเภทหนังสือ <span class="req">*</span></label>
+      <select class="input" name="type" id="fType">${Object.keys(S.cfg.types).map(k => `<option value="${k}">${esc(S.cfg.types[k])}</option>`).join('')}</select></div>` : ''}
+    <div data-f="regNo"><label>เลขรับ</label><input class="input" name="regNo" value="${esc(r.regNo || '')}" placeholder="เว้นว่าง = ออกเลขอัตโนมัติ"></div>
+    <div data-f="docNo"><label id="lblDocNo">เลขที่หนังสือ</label><input class="input" name="docNo" value="${esc(r.docNo || '')}"></div>
+    <div><label>ลงวันที่</label><input type="date" class="input" name="docDate" value="${esc(r.docDate || '')}"></div>
+    <div data-f="speed"><label>ชั้นความเร็ว</label><select class="input" name="speed">${opts(S.cfg.speeds, r.speed || 'ปกติ')}</select></div>
+    <div data-f="fromOrg"><label>จาก</label><input class="input" name="fromOrg" value="${esc(r.fromOrg || '')}"></div>
+    <div data-f="toOrg"><label>ถึง</label><input class="input" name="toOrg" value="${esc(r.toOrg || '')}"></div>
+    <div class="full"><label>เรื่อง <span class="req">*</span></label><textarea class="input" name="subject" rows="2" required>${esc(r.subject || '')}</textarea></div>
+    <div class="full" data-f="grpMulti"><label>กลุ่มงานที่รับผิดชอบ (เลือกได้หลายกลุ่ม)</label>${groupPicker(groupsOf(r))}</div>
+    <div data-f="grpSingle"><label>กลุ่มงานที่รับผิดชอบ</label><select class="input" name="groupName"><option value="">- ไม่ระบุ -</option>${opts(S.cfg.groups, groupsOf(r)[0] || '')}</select></div>
+    <div><label>สถานะ</label><select class="input" name="status"><option value="">(ค่าเริ่มต้น)</option>${opts(S.cfg.statuses, r.status)}</select></div>
+    <div><label>กำหนดเสร็จ</label><input type="date" class="input" name="dueDate" value="${esc(r.dueDate || '')}"><div class="sub">เว้นว่าง = คำนวณตามชั้นความเร็ว</div></div>
+    <div class="full"><label>ไฟล์แนบ (ไม่เกิน ${S.cfg.app.maxFileMb} MB)</label>
+      <input type="file" class="input" id="fFile">
+      ${r.fileUrl ? `<div class="sub" style="margin-top:6px">ไฟล์ปัจจุบัน: <a class="link" href="${esc(r.fileUrl)}" target="_blank">${esc(r.fileName || 'เปิดไฟล์')}</a> (อัปโหลดใหม่เพื่อแทนที่)</div>` : ''}</div>
+    <div class="full"><label>หมายเหตุ</label><textarea class="input" name="note" rows="2">${esc(r.note || '')}</textarea></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">บันทึก</button>
+  </div></form>`);
+  applyFormType(t);
+  if (chooseType) $('#fType').onchange = e => applyFormType(e.target.value);
+
+  $('#docForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const ty = chooseType ? fd.get('type') : t;
+    const data = {};
+    ['regNo','docNo','docDate','speed','fromOrg','toOrg','subject','status','note','dueDate'].forEach(k => data[k] = fd.get(k) || '');
+    data.groupName = ty === 'incoming' ? pickedGroups().join(', ') : (fd.get('groupName') || '');
+    (HIDE_FIELDS[ty] || []).forEach(k => data[k] = '');
+    if (d) data.id = d.id;
+    let file;
+    try { file = await readFile($('#fFile')); } catch (e) { return toast(e.message, 'err'); }
+    try {
+      await call('saveDoc', S.token, ty, data, file);
+      closeModal(); toast('บันทึกข้อมูลเรียบร้อย', 'ok'); reloadPage();
+    } catch (e) {}
+  };
+}
+
+function viewDoc(id){
+  const r = S.list.find(x => x.id === id);
+  if (!r) return;
+  const nop = isNoParty(r);
+  const due = r.dueDate ? thDate(r.dueDate) : (r.dueCalc ? thDate(r.dueCalc) + ' (คำนวณอัตโนมัติ)' : '');
+  const rows = [
+    ['ประเภท', esc(r.typeLabel)], ['เลขรับ', esc(r.regNo)],
+    [docNoLabel(r), isAnn(r) ? '' : esc(r.docNo)],
+    ['ลงวันที่', r.docDate ? thDate(r.docDate) : ''],
+    ['จาก', nop ? '' : esc(r.fromOrg)], ['ถึง', nop ? '' : esc(r.toOrg)],
+    ['เรื่อง', esc(r.subject)],
+    ['ชั้นความเร็ว', nop ? '' : speedBadge(r.speed)],
+    ['กลุ่มงานที่รับผิดชอบ', groupHtml(r)],
+    ['สถานะ', nop ? '' : statusBadge(r.status)],
+    ['กำหนดเสร็จ', due ? due + ' ' + dueBadge(r) : ''],
+    ['ไฟล์แนบ', r.fileUrl ? fileLink(r) : ''], ['หมายเหตุ', esc(r.note)],
+    ['ช่องทาง', esc(r.source)], ['ผู้บันทึก', esc(r.createdBy)],
+    ['วันที่บันทึก', r.createdAt ? thDateTime(r.createdAt) : ''],
+    ['แก้ไขล่าสุด', r.updatedAt ? thDateTime(r.updatedAt) : '']
+  ];
+  openModal('รายละเอียดหนังสือ', `<table class="tbl detail" style="min-width:0">${rows.filter(x => x[1] && x[1] !== '-').map(x => `<tr><th>${x[0]}</th><td>${x[1]}</td></tr>`).join('')}</table>
+    <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">ปิด</button></div>`);
+}
+
+async function receiveDoc(id){
+  if (!(await confirmBox('ยืนยันการลงรับ', 'ยืนยันการลงรับหนังสือนี้?', 'ลงรับ', false, '📥'))) return;
+  try {
+    const no = await call('receiveDoc', S.token, id);
+    toast('ลงรับเรียบร้อย เลขรับ ' + no, 'ok');
+    reloadPage();
+  } catch (e) {}
+}
+
+async function delDoc(type, id){
+  if (!(await confirmBox('ยืนยันการลบ', 'ยืนยันการลบรายการนี้?', 'ลบ', true, '🗑️', 'ไฟล์แนบจะถูกย้ายไปถังขยะ'))) return;
+  try { await call('deleteDoc', S.token, type, id); toast('ลบเรียบร้อย', 'ok'); reloadPage(); } catch (e) {}
+}
+
+function renderPersonnel(){
+  S.type = 'personnel'; S.list = [];
+  mainEl().innerHTML = `
+  <div class="head-row">
+    <h2 class="page-title" style="margin:0">ทะเบียนประวัติบุคลากร</h2>
+    ${isStaff() ? '<button class="btn btn-pri" onclick="openPersonnelForm()">+ เพิ่มบุคลากร</button>' : ''}
+  </div>
+  <div class="card">
+    <div class="toolbar">
+      <input id="pq_per" class="input grow" placeholder="ค้นหาชื่อ / ตำแหน่ง / เบอร์โทร / วุฒิการศึกษา" value="${esc(PF_PERSON.q)}">
+      <select id="pg_per" class="input"><option value="">ทุกกลุ่มงาน</option>${opts(S.cfg.groups, PF_PERSON.group)}</select>
+    </div>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>ชื่อ-สกุล</th><th>ตำแหน่ง / วิทยฐานะ</th><th>กลุ่มงาน</th><th>เบอร์โทรศัพท์ / อีเมล</th><th>วุฒิการศึกษา</th><th>เอกสาร/รูป</th><th>จัดการ</th>
+    </tr></thead><tbody id="perBody"><tr><td colspan="8" class="empty">กำลังโหลด...</td></tr></tbody></table></div>
+    <div class="footer-info" id="perCount"></div>
+  </div>`;
+  $('#pq_per').oninput = e => { PF_PERSON.q = e.target.value; drawPersonnel(); };
+  $('#pg_per').onchange = e => { PF_PERSON.group = e.target.value; drawPersonnel(); };
+  loadPersonnel();
+}
+
+async function loadPersonnel(){
+  try {
+    const list = await api('listPersonnel', S.token);
+    if (S.page !== 'personnel') return;
+    S.list = list || [];
+    drawPersonnel();
+  } catch (e) { handleErr(e); }
+}
+
+function drawPersonnel(){
+  if (!$('#perBody')) return;
+  const q = (PF_PERSON.q || '').trim().toLowerCase();
+  const grp = PF_PERSON.group;
+  const rows = S.list.filter(r =>
+    (!grp || r.groupName === grp) &&
+    (!q || [r.prefix, r.fullName, r.position, r.academicStanding, r.groupName, r.phone, r.email, r.education, r.idCard].join(' ').toLowerCase().includes(q)));
+  $('#perBody').innerHTML = rows.length ? rows.map((r, i) => `<tr>
+    <td>${i + 1}</td>
+    <td><b>${esc((r.prefix || '') + ' ' + r.fullName)}</b>${r.idCard ? `<div class="sub">เลข ปชช: ${esc(r.idCard)}</div>` : ''}</td>
+    <td>${esc(r.position || '-')}${r.academicStanding ? `<br><span class="badge b-blue">${esc(r.academicStanding)}</span>` : ''}</td>
+    <td>${esc(r.groupName || '-')}</td>
+    <td>${esc(r.phone || '-')}${r.email ? `<br><span class="sub">${esc(r.email)}</span>` : ''}</td>
+    <td>${esc(r.education || '-')}</td>
+    <td>${fileLink(r)}</td>
+    <td><button class="btn btn-sm btn-light" onclick="viewPersonnel('${r.id}')">ดู</button>
+      ${isStaff() ? `<button class="btn btn-sm btn-light" onclick="openPersonnelForm('${r.id}')">แก้ไข</button> <button class="btn btn-sm btn-del" onclick="delPersonnel('${r.id}')">ลบ</button>` : ''}</td>
+  </tr>`).join('') : `<tr><td colspan="8" class="empty">ไม่พบประวัติบุคลากร</td></tr>`;
+  $('#perCount').textContent = `แสดง ${rows.length} จาก ${S.list.length} คน`;
+}
+
+function openPersonnelForm(id){
+  const d = id ? S.list.find(x => x.id === id) : null;
+  const r = d || { prefix: 'นาย' };
+  openModal(d ? 'แก้ไขประวัติบุคลากร' : 'เพิ่มประวัติบุคลากร', `
+  <form id="perForm"><div class="form-grid">
+    <div><label>คำนำหน้า</label><select class="input" name="prefix">${opts(['นาย', 'นาง', 'นางสาว', 'ดร.', 'ผศ.', 'รศ.'], r.prefix)}</select></div>
+    <div><label>ชื่อ-สกุล <span class="req">*</span></label><input class="input" name="fullName" required value="${esc(r.fullName || '')}"></div>
+    <div><label>เลขประจำตัวประชาชน (13 หลัก)</label><input class="input" name="idCard" value="${esc(r.idCard || '')}" maxlength="13"></div>
+    <div><label>เพศ</label><select class="input" name="gender">${opts(['ชาย', 'หญิง'], r.gender)}</select></div>
+    <div><label>วันเดือนปีเกิด</label><input type="date" class="input" name="birthDate" value="${esc(r.birthDate || '')}"></div>
+    <div><label>ตำแหน่ง</label><input class="input" name="position" value="${esc(r.position || '')}" placeholder="เช่น ครู, ผู้อำนวยการ"></div>
+    <div><label>วิทยฐานะ</label><input class="input" name="academicStanding" value="${esc(r.academicStanding || '')}" placeholder="เช่น ครูชำนาญการพิเศษ"></div>
+    <div><label>กลุ่มงาน</label><select class="input" name="groupName"><option value="">- เลือก -</option>${opts(S.cfg.groups, r.groupName)}</select></div>
+    <div><label>วันที่เริ่มปฏิบัติราชการ</label><input type="date" class="input" name="startDate" value="${esc(r.startDate || '')}"></div>
+    <div><label>เบอร์โทรศัพท์</label><input class="input" name="phone" value="${esc(r.phone || '')}"></div>
+    <div><label>อีเมล</label><input type="email" class="input" name="email" value="${esc(r.email || '')}"></div>
+    <div><label>วุฒิการศึกษาสูงสุด</label><input class="input" name="education" value="${esc(r.education || '')}" placeholder="เช่น ปริญญาโท (กศ.ม.)"></div>
+    <div class="full"><label>ที่อยู่ปัจจุบัน</label><textarea class="input" name="address" rows="2">${esc(r.address || '')}</textarea></div>
+    <div class="full"><label>รูปถ่าย / เอกสารประวัติ</label>
+      <input type="file" class="input" id="perFile">
+      ${r.fileUrl ? `<div class="sub" style="margin-top:6px">ไฟล์ปัจจุบัน: <a class="link" href="${esc(r.fileUrl)}" target="_blank">${esc(r.fileName || 'เปิดไฟล์')}</a></div>` : ''}</div>
+    <div class="full"><label>หมายเหตุ</label><textarea class="input" name="note" rows="2">${esc(r.note || '')}</textarea></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">บันทึก</button>
+  </div></form>`);
+  $('#perForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const data = {};
+    ['prefix','fullName','idCard','gender','birthDate','position','academicStanding','groupName','startDate','phone','email','address','education','note']
+      .forEach(k => data[k] = fd.get(k) || '');
+    if (d) data.id = d.id;
+    let file;
+    try { file = await readFile($('#perFile')); } catch (e) { return toast(e.message, 'err'); }
+    try {
+      await call('savePersonnel', S.token, data, file);
+      closeModal(); toast('บันทึกข้อมูลบุคลากรเรียบร้อย', 'ok'); loadPersonnel();
+    } catch (e) {}
+  };
+}
+
+function viewPersonnel(id){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  const rows = [
+    ['ชื่อ-สกุล', `<b>${esc((r.prefix || '') + ' ' + r.fullName)}</b>`],
+    ['เลขประจำตัวประชาชน', esc(r.idCard)],
+    ['เพศ / วันเกิด', [esc(r.gender), r.birthDate ? thDate(r.birthDate) : ''].filter(Boolean).join(' · ')],
+    ['ตำแหน่ง / วิทยฐานะ', [esc(r.position), r.academicStanding ? '(' + esc(r.academicStanding) + ')' : ''].filter(Boolean).join(' ')],
+    ['กลุ่มงาน', esc(r.groupName)],
+    ['เริ่มปฏิบัติราชการ', r.startDate ? thDate(r.startDate) : ''],
+    ['เบอร์โทร / อีเมล', [esc(r.phone), esc(r.email)].filter(Boolean).join(' · ')],
+    ['วุฒิการศึกษาสูงสุด', esc(r.education)],
+    ['ที่อยู่ปัจจุบัน', esc(r.address)],
+    ['เอกสาร/รูปภาพ', r.fileUrl ? fileLink(r) : ''],
+    ['หมายเหตุ', esc(r.note)],
+    ['แก้ไขล่าสุด', r.updatedAt ? thDateTime(r.updatedAt) : '']
+  ];
+  openModal('ทะเบียนประวัติบุคลากร', `<table class="tbl detail" style="min-width:0">${rows.filter(x => x[1] && x[1] !== '-').map(x => `<tr><th>${x[0]}</th><td>${x[1]}</td></tr>`).join('')}</table>
+    <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">ปิด</button></div>`);
+}
+
+async function delPersonnel(id){
+  if (!(await confirmBox('ยืนยันการลบ', 'ต้องการลบประวัติบุคลากรนี้?', 'ลบ', true, '🗑️'))) return;
+  try { await call('deletePersonnel', S.token, id); toast('ลบเรียบร้อย', 'ok'); loadPersonnel(); } catch (e) {}
+}
+
+function curFY(){ const d = new Date(); return (d.getMonth() >= 9 ? d.getFullYear() + 1 : d.getFullYear()) + 543; }
+function fmtDays(n){ n = Number(n) || 0; return (n % 1 ? n.toFixed(1) : n) + ' วัน'; }
+function lvType(t){ return (LV_ICON[t] || '📄') + ' ' + esc(t || '-'); }
+function lvBadge(s){ return `<span class="badge ${LV_CLS[s] || 'b-gray'}">${esc(s || '-')}</span>`; }
+function lvRange(r){
+  const p = r.period && r.period !== 'เต็มวัน' ? ' (' + esc(r.period) + ')' : '';
+  return (!r.endDate || r.startDate === r.endDate) ? thDate(r.startDate) + p : thDate(r.startDate) + ' – ' + thDate(r.endDate);
+}
+function calcLeave(s, e, per, ty){
+  if (!s || !e) return { err: 'กรุณาระบุวันที่ลาให้ครบ' };
+  const dn = x => { const m = x.split('-'); return Math.floor(Date.UTC(+m[0], +m[1] - 1, +m[2]) / 86400000); };
+  const a = dn(s), b = dn(e);
+  if (b < a) return { err: 'วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่มลา' };
+  if (per && per !== 'เต็มวัน') return a !== b ? { err: 'การลาครึ่งวันต้องเป็นวันเดียวกัน' } : { days: 0.5 };
+  if (LEAVE_CAL.indexOf(ty) >= 0) return { days: b - a + 1 };
+  let n = 0;
+  for (let d = a; d <= b; d++) { const w = (d + 4) % 7; if (w !== 0 && w !== 6) n++; }
+  return n ? { days: n } : { err: 'ช่วงวันที่เลือกเป็นวันเสาร์-อาทิตย์ทั้งหมด' };
+}
+
+function renderLeave(){
+  S.type = 'leave'; S.list = [];
+  if (LF.fy === null) LF.fy = String(curFY());
+  const fys = [0, 1, 2, 3].map(i => String(curFY() - i));
+  const stepOpts = (S.cfg.leaveSteps || []).slice(0, 4);
+  mainEl().innerHTML = `
+  <div class="head-row">
+    <h2 class="page-title" style="margin:0">การลา (ระบบอนุมัติ 4 ขั้นตอน)</h2>
+    <button class="btn btn-pri" onclick="openLeaveForm()">+ เขียนใบลา</button>
+  </div>
+  <div class="stats" id="lvStats"></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="toolbar">
+      <input id="lq" class="input grow" placeholder="${isStaff() ? 'ค้นหาชื่อ / ตำแหน่ง / เหตุผล' : 'ค้นหาเหตุผล'}" value="${esc(LF.q)}">
+      <select id="lt" class="input"><option value="">ทุกประเภทการลา</option>${opts(S.cfg.leaveTypes, LF.type)}</select>
+      <select id="ls" class="input">
+        <option value="">ทุกสถานะ</option>
+        ${stepOpts.map(st => `<option value="${st}" ${LF.status === st ? 'selected' : ''}>⏳ ${esc(st)}</option>`).join('')}
+        <option value="อนุมัติแล้ว" ${LF.status === 'อนุมัติแล้ว' ? 'selected' : ''}>✅ อนุมัติแล้ว</option>
+        <option value="ไม่อนุมัติ" ${LF.status === 'ไม่อนุมัติ' ? 'selected' : ''}>⛔ ไม่อนุมัติ</option>
+        <option value="ยกเลิก" ${LF.status === 'ยกเลิก' ? 'selected' : ''}>❌ ยกเลิก</option>
+      </select>
+      <select id="lf" class="input"><option value="">ทุกปีงบประมาณ</option>${fys.map(y => `<option value="${y}" ${LF.fy === y ? 'selected' : ''}>ปีงบประมาณ ${y}</option>`).join('')}</select>
+    </div>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>ผู้ลา</th><th>ประเภท</th><th>วันที่ลา</th><th>จำนวน</th><th>เหตุผล</th><th>สถานะ / ขั้นตอน</th><th>ไฟล์</th><th>จัดการ</th>
+    </tr></thead><tbody id="lvBody"><tr><td colspan="9" class="empty">กำลังโหลดขั้นตอน...</td></tr></tbody></table></div>
+    <div class="footer-info" id="lvCount"></div>
+  </div>
+  ${isStaff() ? `<div class="card"><h3>สรุปวันลาที่อนุมัติแล้ว รายบุคคล <span class="sub" id="lvSumFy"></span></h3><div class="table-wrap" id="lvSum"></div></div>` : ''}`;
+
+  $('#lq').oninput = e => { LF.q = e.target.value; drawLeave(); };
+  $('#lt').onchange = e => { LF.type = e.target.value; drawLeave(); };
+  $('#ls').onchange = e => { LF.status = e.target.value; drawLeave(); };
+  $('#lf').onchange = e => { LF.fy = e.target.value; drawLeave(); };
+  loadLeave();
+}
+
+async function loadLeave(){
+  try {
+    const list = await api('listLeave', S.token);
+    if (S.page !== 'leave') return;
+    S.list = list || [];
+    setLeaveBadge(S.list.filter(r => (r.status || '').indexOf('รออนุมัติ') >= 0 && (isStaff() || r.username === S.user.username)).length);
+    drawLeave();
+  } catch (e) {
+    handleErr(e);
+    if ($('#lvBody')) $('#lvBody').innerHTML = `<tr><td colspan="9" class="empty">โหลดข้อมูลไม่สำเร็จ</td></tr>`;
+  }
+}
+
+function setLF(status){ LF.status = status; if ($('#ls')) $('#ls').value = status; drawLeave(); }
+function setLFType(t){ LF.type = LF.type === t ? '' : t; if ($('#lt')) $('#lt').value = LF.type; drawLeave(); }
+
+function drawLeave(){
+  if (!$('#lvBody')) return;
+  const inFy = S.list.filter(r => !LF.fy || String(r.fy) === LF.fy);
+
+  if (isStaff()) {
+    const pendCount = inFy.filter(r => (r.status || '').indexOf('รออนุมัติ') >= 0).length;
+    $('#lvStats').innerHTML = [
+      ['','📋','ใบลาทั้งหมด','#b71c1c'],
+      ['รออนุมัติ','⏳','รออนุมัติ (' + pendCount + ')','#ef6c00'],
+      ['อนุมัติแล้ว','✅','อนุมัติแล้ว','#2e7d32'],
+      ['ไม่อนุมัติ','⛔','ไม่อนุมัติ','#c62828']
+    ].map(c => `<div class="stat ${LF.status === c[0] || (c[0] === 'รออนุมัติ' && LF.status.indexOf('รออนุมัติ') >= 0) ? 'sel' : ''}" style="border-left-color:${c[3]}" data-s="${c[0]}" onclick="setLF(this.dataset.s)">
+      <div class="l">${c[1]} ${c[2]}</div><div class="n" style="color:${c[3]}">${c[0] === 'รออนุมัติ' ? pendCount : (c[0] ? inFy.filter(r => r.status === c[0]).length : inFy.length)}</div></div>`).join('');
+  } else {
+    const ok = inFy.filter(r => r.status === 'อนุมัติแล้ว');
+    const types = LEAVE_MAIN.concat((S.cfg.leaveTypes || []).filter(t => LEAVE_MAIN.indexOf(t) < 0 && ok.some(r => r.leaveType === t)));
+    const myPend = inFy.filter(r => (r.status || '').indexOf('รออนุมัติ') >= 0).length;
+    $('#lvStats').innerHTML = types.map(t => {
+      const a = ok.filter(r => r.leaveType === t);
+      const d = a.reduce((s, r) => s + r.days, 0);
+      return `<div class="stat ${LF.type === t ? 'sel' : ''}" data-t="${esc(t)}" onclick="setLFType(this.dataset.t)">
+        <div class="l">${LV_ICON[t] || '📄'} ${esc(t)}</div><div class="n">${d % 1 ? d.toFixed(1) : d} <small>วัน</small></div><div class="d">${a.length} ครั้ง ${LF.fy ? '· ปีงบฯ ' + LF.fy : ''}</div></div>`;
+    }).join('') + `<div class="stat" style="border-left-color:#ef6c00" data-s="รออนุมัติ" onclick="setLF(this.dataset.s)"><div class="l">⏳ รออนุมัติ</div><div class="n" style="color:#ef6c00">${myPend}</div></div>`;
+  }
+
+  const q = (LF.q || '').trim().toLowerCase();
+  const rows = inFy.filter(r => {
+    if (LF.type && r.leaveType !== LF.type) return false;
+    if (LF.status) {
+      if (LF.status === 'รออนุมัติ') { if ((r.status || '').indexOf('รออนุมัติ') < 0) return false; }
+      else if (r.status !== LF.status) return false;
+    }
+    if (q && ![r.fullName, r.position, r.reason, r.leaveType].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  $('#lvBody').innerHTML = rows.length ? rows.map((r, i) => `<tr class="${r.status === 'ยกเลิก' ? 'row-off' : ''}">
+    <td>${i + 1}</td>
+    <td><b>${esc(r.fullName || '-')}</b>${r.position ? `<div class="sub">${esc(r.position)}</div>` : ''}</td>
+    <td class="nowrap">${lvType(r.leaveType)}</td>
+    <td class="nowrap">${lvRange(r)}</td>
+    <td class="nowrap"><b>${fmtDays(r.days)}</b></td>
+    <td><div style="min-width:160px">${esc(r.reason || '-')}</div></td>
+    <td>${lvBadge(r.status)}</td>
+    <td>${fileLink(r)}</td>
+    <td>${leaveActions(r)}</td>
+  </tr>`).join('')
+  : `<tr><td colspan="9" class="empty">${S.list.length ? 'ไม่พบข้อมูลตามตัวกรอง' : 'ยังไม่มีใบลา กด "+ เขียนใบลา" เพื่อเริ่ม'}</td></tr>`;
+  $('#lvCount').textContent = `แสดง ${rows.length} จาก ${inFy.length} รายการ`;
+
+  if ($('#lvSum')) {
+    const ok = inFy.filter(r => r.status === 'อนุมัติแล้ว');
+    const cols = LEAVE_MAIN.concat('อื่น ๆ');
+    const ppl = {};
+    ok.forEach(r => {
+      const k = r.username || r.fullName;
+      if (!ppl[k]) ppl[k] = { name: r.fullName, pos: r.position, t: {}, total: 0 };
+      const key = LEAVE_MAIN.indexOf(r.leaveType) >= 0 ? r.leaveType : 'อื่น ๆ';
+      const x = ppl[k].t[key] || (ppl[k].t[key] = { n: 0, d: 0 });
+      x.n++; x.d += r.days; ppl[k].total += r.days;
+    });
+    const list = Object.keys(ppl).map(k => ppl[k]).sort((a, b) => b.total - a.total);
+    $('#lvSum').innerHTML = list.length ? `<table class="tbl compact"><thead><tr><th>#</th><th>ชื่อ-สกุล</th>${cols.map(c => `<th>${esc(c)}</th>`).join('')}<th>รวม</th></tr></thead><tbody>
+      ${list.map((p, i) => `<tr><td>${i + 1}</td><td><b>${esc(p.name)}</b>${p.pos ? `<div class="sub">${esc(p.pos)}</div>` : ''}</td>
+        ${cols.map(c => `<td class="nowrap">${p.t[c] ? fmtDays(p.t[c].d) + ` <span class="sub">(${p.t[c].n} ครั้ง)</span>` : '-'}</td>`).join('')}
+        <td class="nowrap"><b>${fmtDays(p.total)}</b></td></tr>`).join('')}</tbody></table>`
+      : '<div class="empty">ยังมีการลาที่อนุมัติแล้วเสร็จสมบูรณ์</div>';
+    $('#lvSumFy').textContent = LF.fy ? '(ปีงบประมาณ ' + LF.fy + ')' : '(ทุกปี)';
+  }
+}
+
+function leaveActions(r){
+  const own = r.username === S.user.username, staff = isStaff();
+  const isPend = (r.status || '').indexOf('รออนุมัติ') >= 0;
+  let h = `<button class="btn btn-sm btn-light" onclick="viewLeave('${r.id}')">ดู</button> `;
+  if (staff && isPend) h += `<button class="btn btn-sm btn-ok" onclick="openReview('${r.id}')">พิจารณา</button> `;
+  if ((own && isPend) || (staff && r.status !== 'ยกเลิก')) {
+    if (isPend) h += `<button class="btn btn-sm btn-light" onclick="openLeaveForm('${r.id}')">แก้ไข</button> `;
+    h += `<button class="btn btn-sm btn-light" onclick="cancelLeave('${r.id}')">ยกเลิกใบลา</button> `;
+  }
+  if (isAdmin()) h += `<button class="btn btn-sm btn-del" onclick="delLeave('${r.id}')">ลบ</button>`;
+  return `<div class="nowrap">${h}</div>`;
+}
+
+function lvDetailRows(r){
+  const leaveSteps = S.cfg.leaveSteps || [];
+  const curIdx = Number(r.stepIndex) || 0;
+  const isDone = r.status === 'อนุมัติแล้ว' || r.status === 'ไม่อนุมัติ';
+
+  const barHtml = `<div class="steps" style="margin-top:4px">${leaveSteps.slice(0, 4).map((st, i) =>
+    `<span class="sdot ${i <= curIdx || isDone && r.status === 'อนุมัติแล้ว' ? 'on' : ''}" style="${i <= curIdx || isDone && r.status === 'อนุมัติแล้ว' ? 'background:' + (r.status === 'ไม่อนุมัติ' && i === curIdx ? '#c62828' : '#2e7d32') : ''}" title="${esc(st)}">${i + 1}</span>`
+  ).join('<i class="sline"></i>')}</div>`;
+
+  const logHtml = (r.approversLog || []).map(l => `
+    <div class="tl"><div class="tl-dot" style="background:${l.decision === 'อนุมัติ' ? '#2e7d32' : '#c62828'}"></div><div>
+      <b>ขั้นที่ ${l.step}: ${esc(l.stepName)}</b> — <span class="badge ${l.decision === 'อนุมัติ' ? 'b-green' : 'b-red'}">${esc(l.decision)}</span>
+      <div class="sub">ผู้พิจารณา: ${esc(l.approver)} · ${thDateTime(l.at)}</div>
+      ${l.note ? `<div style="margin-top:2px">ความเห็น: ${esc(l.note)}</div>` : ''}
+    </div></div>`).join('');
+
+  return [
+    ['ผู้ลา', `<b>${esc(r.fullName)}</b>${r.position ? ' · ' + esc(r.position) : ''}`],
+    ['กลุ่มงาน', esc(r.groupName)],
+    ['ประเภทการลา', lvType(r.leaveType)],
+    ['วันที่ลา', lvRange(r)],
+    ['จำนวนวัน', `<b>${fmtDays(r.days)}</b>`],
+    ['เหตุผล', esc(r.reason)],
+    ['ติดต่อระหว่างลา', esc(r.contact)],
+    ['ไฟล์แนบ', r.fileUrl ? fileLink(r) : ''],
+    ['สถานะปัจจุบัน', lvBadge(r.status) + barHtml],
+    ['ประวัติการพิจารณา', logHtml || '<div class="sub">ยังไม่มีประวัติการพิจารณา</div>'],
+    ['วันที่ส่งใบลา', r.createdAt ? thDateTime(r.createdAt) : '']
+  ].filter(x => x[1] && x[1] !== '-').map(x => `<tr><th>${x[0]}</th><td>${x[1]}</td></tr>`).join('');
+}
+
+function viewLeave(id){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  openModal('รายละเอียดใบลา', `<table class="tbl detail" style="min-width:0">${lvDetailRows(r)}</table>
+    <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">ปิด</button></div>`);
+}
+
+function openReview(id){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  const leaveSteps = S.cfg.leaveSteps || [];
+  const idx = Number(r.stepIndex) || 0;
+  const stepNames = ['หัวหน้างาน', 'หัวหน้างานการลา', 'รอง ผอ.กลุ่มบริหารงานบุคคล', 'ผู้อำนวยการโรงเรียน'];
+  const curName = stepNames[idx] || ('ขั้นที่ ' + (idx + 1));
+
+  openModal('พิจารณาใบลา (' + curName + ')', `
+    <table class="tbl detail" style="min-width:0">${lvDetailRows(r)}</table>
+    <div class="form-grid" style="margin-top:14px">
+      <div class="full"><label>ความเห็น / เงื่อนไขเพิ่มเติม (กรณีไม่อนุมัติต้องระบุเหตุผล)</label><textarea class="input" id="rvNote" rows="2" placeholder="ความเห็นประกอบการพิจารณา..."></textarea></div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-light" onclick="closeModal()">ปิด</button>
+      <button type="button" class="btn btn-del" id="rvNo">ไม่อนุมัติ</button>
+      <button type="button" class="btn btn-ok" id="rvYes">✓ อนุมัติ / ผ่านขั้นนี้ ➜</button>
+    </div>`);
+  const act = async dec => {
+    const note = $('#rvNote').value;
+    if (dec === 'ไม่อนุมัติ' && !note.trim()) return toast('กรุณาระบุเหตุผลที่ไม่อนุมัติ', 'err');
+    try {
+      await call('reviewLeave', S.token, id, dec, note);
+      closeModal(); toast('บันทึกผลการพิจารณาเรียบร้อย', 'ok'); loadLeave();
+    } catch (e) {}
+  };
+  $('#rvYes').onclick = () => act('อนุมัติ');
+  $('#rvNo').onclick = () => act('ไม่อนุมัติ');
+}
+
+function openLeaveForm(id){
+  const d = id ? S.list.find(x => x.id === id) : null;
+  const t = today();
+  const r = d || { fullName: S.user.fullName, position: S.user.position || '', leaveType: 'ลาป่วย', period: 'เต็มวัน', startDate: t, endDate: t };
+  const staff = isStaff();
+  openModal(d ? 'แก้ไขใบลา' : 'เขียนใบลา', `
+  <form id="lvForm"><div class="form-grid">
+    <div><label>ชื่อ-สกุล ผู้ลา</label><input class="input" name="fullName" value="${esc(r.fullName || '')}" ${staff ? '' : 'readonly'}></div>
+    <div><label>ตำแหน่ง</label><input class="input" name="position" value="${esc(r.position || '')}" placeholder="เช่น ครู คศ.1"></div>
+    <div><label>ประเภทการลา <span class="req">*</span></label><select class="input" name="leaveType" id="lvType">${opts(S.cfg.leaveTypes, r.leaveType)}</select></div>
+    <div><label>ช่วงเวลา</label><select class="input" name="period" id="lvPeriod">${opts(S.cfg.leavePeriods, r.period || 'เต็มวัน')}</select></div>
+    <div><label>ตั้งแต่วันที่ <span class="req">*</span></label><input type="date" class="input" id="lvStart" value="${esc(r.startDate || '')}" required></div>
+    <div><label>ถึงวันที่ <span class="req">*</span></label><input type="date" class="input" id="lvEnd" value="${esc(r.endDate || '')}" required></div>
+    <div class="full"><div class="lv-calc" id="lvCalc"></div></div>
+    <div class="full"><label>เหตุผลการลา <span class="req" id="lvReq">*</span></label><textarea class="input" name="reason" rows="2">${esc(r.reason || '')}</textarea></div>
+    <div class="full"><label>ระหว่างลาติดต่อได้ที่</label><input class="input" name="contact" value="${esc(r.contact || '')}" placeholder="ที่อยู่ / เบอร์โทรศัพท์"></div>
+    <div class="full"><label>ไฟล์แนบ (ใบรับรองแพทย์ / เอกสารประกอบ)</label>
+      <input type="file" class="input" id="lvFile">
+      ${r.fileUrl ? `<div class="sub" style="margin-top:6px">ไฟล์ปัจจุบัน: <a class="link" href="${esc(r.fileUrl)}" target="_blank">${esc(r.fileName || 'เปิดไฟล์')}</a></div>` : ''}</div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">${d ? 'บันทึก' : 'ส่งใบลา'}</button>
+  </div></form>`);
+
+  const upd = () => {
+    const per = $('#lvPeriod').value, ty = $('#lvType').value;
+    if (per !== 'เต็มวัน') { $('#lvEnd').value = $('#lvStart').value; $('#lvEnd'].disabled = true; }
+    else $('#lvEnd'].disabled = false;
+    const c = calcLeave($('#lvStart').value, $('#lvEnd').value, per, ty);
+    let h = c.err ? `<span style="color:#c62828">⚠ ${esc(c.err)}</span>`
+      : `จำนวนวันลา: <b>${fmtDays(c.days)}</b> <span class="sub">${LEAVE_CAL.indexOf(ty) >= 0 ? '(นับรวมวันหยุด)' : '(ไม่นับเสาร์-อาทิตย์ · วันหยุดนักขัตฤกษ์โปรดตรวจสอบ)'}</span>`;
+    if (ty === 'ลาป่วย' && c.days >= 30) h += '<div class="sub" style="color:#e65100;margin-top:4px">ลาป่วยตั้งแต่ 30 วันขึ้นไป ต้องแนบใบรับรองแพทย์</div>';
+    $('#lvCalc').innerHTML = h;
+    $('#lvReq').classList.toggle('hidden', ty === 'ลาพักผ่อน');
+  };
+  ['#lvType', '#lvPeriod', '#lvStart', '#lvEnd'].forEach(s => $(s).addEventListener('change', upd));
+  upd();
+
+  $('#lvForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const data = {
+      fullName: fd.get('fullName') || '', position: fd.get('position') || '',
+      leaveType: fd.get('leaveType'), period: fd.get('period'),
+      startDate: $('#lvStart').value, endDate: $('#lvEnd').value,
+      reason: fd.get('reason') || '', contact: fd.get('contact') || ''
+    };
+    const c = calcLeave(data.startDate, data.endDate, data.period, data.leaveType);
+    if (c.err) return toast(c.err, 'err');
+    if (data.leaveType !== 'ลาพักผ่อน' && !data.reason.trim()) return toast('กรุณาระบุเหตุผลการลา', 'err');
+    if (d) data.id = d.id;
+    let file;
+    try { file = await readFile($('#lvFile')); } catch (e) { return toast(e.message, 'err'); }
+    try {
+      await call('saveLeave', S.token, data, file);
+      closeModal();
+      toast(d ? 'บันทึกการแก้ไขเรียบร้อย' : 'ส่งใบลาเรียบร้อย (เริ่มขั้นตอนที่ 1)', 'ok');
+      loadLeave();
+    } catch (e) {}
+  };
+}
+
+async function cancelLeave(id){
+  if (!(await confirmBox('ยกเลิกใบลา', 'ต้องการยกเลิกใบลานี้ใช่หรือไม่?', 'ยกเลิกใบลา', true, '🗓️'))) return;
+  try { await call('cancelLeave', S.token, id); toast('ยกเลิกใบลาเรียบร้อย', 'ok'); loadLeave(); } catch (e) {}
+}
+
+async function delLeave(id){
+  if (!(await confirmBox('ยืนยันการลบ', 'ลบใบลานี้ออกจากระบบถาวร?', 'ลบ', true, '🗑️', 'ไฟล์แนบจะถูกย้ายไปถังขยะ'))) return;
+  try { await call('deleteLeave', S.token, id); toast('ลบเรียบร้อย', 'ok'); loadLeave(); } catch (e) {}
+}
+
+function studySteps(){ return (S.cfg && S.cfg.studySteps) || []; }
+function studyCourse(r){ return [r.degree, r.major ? 'สาขา' + r.major : ''].filter(Boolean).join(' ') || r.subject || '-'; }
+function stepColor(i){ return STEP_COLORS[i] || '#777'; }
+function stepBadge(i){
+  const s = studySteps()[i] || '-';
+  const c = stepColor(i);
+  const done = i === studySteps().length - 1;
+  return `<span class="badge" style="background:${c}1f;color:${c}">${esc(s)}${done ? ' ✓' : ''}</span>`;
+}
+function stepBar(idx){
+  return `<div class="steps">${studySteps().map((s, i) =>
+    `<span class="sdot ${i <= idx ? 'on' : ''}" style="${i <= idx ? 'background:' + stepColor(idx) : ''}" title="${esc(s)}">${i + 1}</span>`
+  ).join('<i class="sline"></i>')}</div>`;
+}
+
+function renderStudy(){
+  S.type = 'study'; S.list = [];
+  mainEl().innerHTML = `
+  <div class="head-row">
+    <h2 class="page-title" style="margin:0">ทะเบียนการลาศึกษาต่อ</h2>
+    <button class="btn btn-pri" onclick="openStudyForm()">+ ยื่นคำขอลาศึกษาต่อ</button>
+  </div>
+  <div class="stats" id="stStats"></div>
+  <div class="card">
+    <div class="toolbar">
+      <input id="sq" class="input grow" placeholder="ค้นหาชื่อ / สาขา / สถานศึกษา" value="${esc(SF.q)}">
+      <select id="ss" class="input"><option value="">ทุกขั้นตอน</option>${studySteps().map((s, i) => `<option value="${i}" ${String(i) === SF.step ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>
+    </div>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>ผู้ขอ</th><th>หลักสูตร / สถานศึกษา</th><th>ขั้นตอนปัจจุบัน</th><th>อัปเดตล่าสุด</th><th>ไฟล์ล่าสุด</th><th>จัดการ</th>
+    </tr></thead><tbody id="stBody"><tr><td colspan="7" class="empty">กำลังโหลด...</td></tr></tbody></table></div>
+    <div class="footer-info" id="stCount"></div>
+  </div>`;
+  $('#sq').oninput = e => { SF.q = e.target.value; drawStudy(); };
+  $('#ss').onchange = e => { SF.step = e.target.value; drawStudy(); };
+  loadStudy();
+}
+
+async function loadStudy(){
+  try {
+    const list = await api('listStudy', S.token);
+    if (S.page !== 'study') return;
+    S.list = list || [];
+    drawStudy();
+  } catch (e) {
+    handleErr(e);
+    if ($('#stBody')) $('#stBody').innerHTML = `<tr><td colspan="7" class="empty">โหลดข้อมูลไม่สำเร็จ: ${esc((e && e.message) || e)}</td></tr>`;
+  }
+}
+
+function setSF(v){ SF.step = v; if ($('#ss')) $('#ss').value = v; drawStudy(); }
+
+function drawStudy(){
+  if (!$('#stBody')) return;
+  const steps = studySteps();
+  $('#stStats').innerHTML =
+    `<div class="stat ${SF.step === '' ? 'sel' : ''}" onclick="setSF('')"><div class="l">🎓 ทั้งหมด</div><div class="n">${S.list.length}</div></div>` +
+    steps.map((s, i) => `<div class="stat ${SF.step === String(i) ? 'sel' : ''}" style="border-left-color:${stepColor(i)}" onclick="setSF('${i}')">
+      <div class="l">${esc(s)}</div><div class="n" style="color:${stepColor(i)}">${S.list.filter(r => r.stepIdx === i).length}</div></div>`).join('');
+
+  const q = (SF.q || '').trim().toLowerCase();
+  const rows = S.list.filter(r =>
+    (SF.step === '' || String(r.stepIdx) === SF.step) &&
+    (!q || [r.fullName, r.position, r.degree, r.major, r.university, r.subject, r.note].join(' ').toLowerCase().includes(q)));
+
+  $('#stBody').innerHTML = rows.length ? rows.map((r, i) => `<tr>
+    <td>${i + 1}</td>
+    <td><b>${esc(r.fullName || '-')}</b>${r.position ? `<div class="sub">${esc(r.position)}</div>` : ''}</td>
+    <td><div class="subject">${esc(studyCourse(r))}</div>${r.university ? `<div class="sub">${esc(r.university)}</div>` : ''}</td>
+    <td>${stepBar(r.stepIdx)}<div style="margin-top:6px">${stepBadge(r.stepIdx)}</div></td>
+    <td class="nowrap">${thDateTime(r.updatedAt || r.createdAt)}</td>
+    <td>${fileLink(r)}</td>
+    <td>${studyActions(r)}</td>
+  </tr>`).join('')
+  : `<tr><td colspan="7" class="empty">${S.list.length ? 'ไม่พบข้อมูลตามตัวกรอง' : 'ยังไม่มีข้อมูลการลาศึกษาต่อ กด "+ ยื่นคำขอลาศึกษาต่อ" เพื่อเริ่ม'}</td></tr>`;
+  $('#stCount').textContent = `แสดง ${rows.length} จาก ${S.list.length} รายการ`;
+}
+
+function studyActions(r){
+  const staff = isStaff(), own = r.createdBy === S.user.username;
+  const last = studySteps().length - 1;
+  let h = `<button class="btn btn-sm btn-light" onclick="viewStudy('${r.id}')">ดู</button> `;
+  if (staff || own) {
+    if (r.stepIdx < last) h += `<button class="btn btn-sm btn-ok" onclick="openAdvance('${r.id}',1)">ขั้นถัดไป ➜</button> `;
+    if (staff && r.stepIdx > 0) h += `<button class="btn btn-sm btn-light" onclick="openAdvance('${r.id}',-1)">↩ ย้อนขั้น</button> `;
+    h += `<button class="btn btn-sm btn-light" onclick="openStudyForm('${r.id}')">แก้ไข</button> `;
+    if (staff || r.stepIdx === 0) h += `<button class="btn btn-sm btn-del" onclick="delStudy('${r.id}')">ลบ</button>`;
+  }
+  return `<div class="nowrap">${h}</div>`;
+}
+
+function openStudyForm(id){
+  const d = id ? S.list.find(x => x.id === id) : null;
+  const r = d || { fullName: S.user.fullName, position: S.user.position || '', docDate: today() };
+  const degrees = (!r.degree || DEGREES.indexOf(r.degree) >= 0) ? DEGREES : DEGREES.concat(r.degree);
+  openModal(d ? 'แก้ไขข้อมูลการลาศึกษาต่อ' : 'ยื่นคำขอลาศึกษาต่อ (ขั้นที่ 1: ขออนุญาตไปสมัครสอบ)', `
+  <form id="stForm"><div class="form-grid">
+    <div><label>ชื่อ-สกุล ผู้ขอ <span class="req">*</span></label><input class="input" name="fullName" required value="${esc(r.fullName || '')}"></div>
+    <div><label>ตำแหน่ง / วิทยฐานะ</label><input class="input" name="position" value="${esc(r.position || '')}" placeholder="เช่น ครู คศ.1"></div>
+    <div><label>ระดับการศึกษา <span class="req">*</span></label><select class="input" name="degree" required><option value="">- เลือก -</option>${opts(degrees, r.degree)}</select></div>
+    <div><label>สาขาวิชา</label><input class="input" name="major" value="${esc(r.major || '')}" placeholder="เช่น การบริหารการศึกษา"></div>
+    <div class="full"><label>สถานศึกษา / มหาวิทยาลัย <span class="req">*</span></label><input class="input" name="university" required value="${esc(r.university || '')}"></div>
+    <div><label>เลขที่หนังสือ / บันทึกข้อความ</label><input class="input" name="docNo" value="${esc(r.docNo || '')}"></div>
+    <div><label>วันที่ยื่น</label><input type="date" class="input" name="docDate" value="${esc(r.docDate || '')}"></div>
+    ${d ? `
+    <div><label>วันเริ่มลา</label><input type="date" class="input" name="startDate" value="${esc(r.startDate || '')}"></div>
+    <div><label>วันสิ้นสุดการลา</label><input type="date" class="input" name="endDate" value="${esc(r.endDate || '')}"></div>
+    <div><label>วันที่สำเร็จการศึกษา</label><input type="date" class="input" name="gradDate" value="${esc(r.gradDate || '')}"></div>
+    <div></div>` : ''}
+    <div class="full"><label>ไฟล์แนบ ${d ? '(อัปโหลดเพื่อแทนไฟล์ล่าสุด)' : ''}</label>
+      <input type="file" class="input" id="stFile">
+      <div class="sub">${d ? '' : esc(STEP_HINTS[0])}</div>
+      ${r.fileUrl ? `<div class="sub" style="margin-top:6px">ไฟล์ล่าสุด: <a class="link" href="${esc(r.fileUrl)}" target="_blank">${esc(r.fileName || 'เปิดไฟล์')}</a></div>` : ''}</div>
+    <div class="full"><label>หมายเหตุ</label><textarea class="input" name="note" rows="2">${esc(r.note || '')}</textarea></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">${d ? 'บันทึก' : 'ยื่นคำขอ'}</button>
+  </div></form>`);
+  $('#stForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const data = {};
+    ['fullName','position','degree','major','university','docNo','docDate','startDate','endDate','gradDate','note']
+      .forEach(k => { if (fd.has(k)) data[k] = fd.get(k) || ''; });
+    if (d) data.id = d.id;
+    let file;
+    try { file = await readFile($('#stFile')); } catch (e) { return toast(e.message, 'err'); }
+    try {
+      await call('saveStudy', S.token, data, file);
+      closeModal();
+      toast(d ? 'บันทึกการแก้ไขเรียบร้อย' : 'ยื่นคำขอเรียบร้อย (ขั้นที่ 1)', 'ok');
+      loadStudy();
+    } catch (e) {}
+  };
+}
+
+function openAdvance(id, dir){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  const nx = r.stepIdx + dir;
+  if (nx < 0 || nx >= studySteps().length) return;
+  let extra = '';
+  if (dir === 1 && nx === 1) extra = `
+    <div><label>วันเริ่มลา</label><input type="date" class="input" name="startDate" value="${esc(r.startDate || '')}"></div>
+    <div><label>วันสิ้นสุดการลา</label><input type="date" class="input" name="endDate" value="${esc(r.endDate || '')}"></div>`;
+  if (dir === 1 && nx === 2) extra = `
+    <div><label>วันที่สำเร็จการศึกษา <span class="req">*</span></label><input type="date" class="input" name="gradDate" required value="${esc(r.gradDate || '')}"></div><div></div>`;
+  if (dir === 1 && nx === 3) extra = `
+    <div class="full"><label>เลขที่หนังสือรายงานการเพิ่มวุฒิ</label><input class="input" name="docNo" value=""></div>`;
+
+  openModal(dir === 1 ? 'เลื่อนไปขั้นตอนถัดไป' : 'ย้อนขั้นตอน', `
+  <div class="sub" style="margin-bottom:10px"><b>${esc(r.fullName)}</b> · ${esc(studyCourse(r))}${r.university ? ' · ' + esc(r.university) : ''}</div>
+  <div class="flow">${stepBadge(r.stepIdx)}<span>➜</span>${stepBadge(nx)}</div>
+  <form id="advForm"><div class="form-grid">
+    <div><label>วันที่</label><input type="date" class="input" name="date" value="${today()}"></div><div></div>
+    ${extra}
+    ${dir === 1 ? `<div class="full"><label>ไฟล์แนบ</label><input type="file" class="input" id="advFile"><div class="sub">${esc(STEP_HINTS[nx] || '')}</div></div>` : ''}
+    <div class="full"><label>${dir === 1 ? 'หมายเหตุ / รายละเอียด' : 'เหตุผลที่ย้อนขั้นตอน'} ${dir === -1 ? '<span class="req">*</span>' : ''}</label>
+      <textarea class="input" name="note" rows="2" ${dir === -1 ? 'required' : ''}></textarea></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn ${dir === 1 ? 'btn-ok' : 'btn-pri'}">${dir === 1 ? 'ยืนยันเลื่อนขั้น' : 'ยืนยันย้อนขั้น'}</button>
+  </div></form>`);
+
+  $('#advForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const p = { dir: dir };
+    ['date','note','startDate','endDate','gradDate','docNo'].forEach(k => { if (fd.has(k)) p[k] = fd.get(k) || ''; });
+    let file = null;
+    if (dir === 1) { try { file = await readFile($('#advFile')); } catch (e) { return toast(e.message, 'err'); } }
+    try {
+      const res = await call('advanceStudy', S.token, id, p, file);
+      closeModal();
+      toast((dir === 1 ? 'เลื่อนเป็น ' : 'ย้อนเป็น ') + res.step + ' เรียบร้อย', 'ok');
+      loadStudy();
+    } catch (e) {}
+  };
+}
+
+function viewStudy(id){
+  const r = S.list.find(x => x.id === id); if (!r) return;
+  const steps = studySteps();
+  const leave = (r.startDate || r.endDate) ? thDate(r.startDate) + ' ถึง ' + thDate(r.endDate) : '';
+  const rows = [
+    ['ชื่อ-สกุล ผู้ขอ', esc(r.fullName)], ['ตำแหน่ง', esc(r.position)],
+    ['ระดับการศึกษา', esc(r.degree)], ['สาขาวิชา', esc(r.major)], ['สถานศึกษา', esc(r.university)],
+    ['ขั้นตอนปัจจุบัน', stepBar(r.stepIdx) + '<div style="margin-top:6px">' + stepBadge(r.stepIdx) + '</div>'],
+    ['เลขที่หนังสือ', esc(r.docNo)], ['วันที่ยื่น', r.docDate ? thDate(r.docDate) : ''],
+    ['ช่วงเวลาลาศึกษา', leave], ['วันที่สำเร็จการศึกษา', r.gradDate ? thDate(r.gradDate) : ''],
+    ['ไฟล์ล่าสุด', r.fileUrl ? fileLink(r) : ''], ['หมายเหตุ', esc(r.note)],
+    ['ผู้บันทึก', esc(r.createdBy)], ['วันที่บันทึก', r.createdAt ? thDateTime(r.createdAt) : ''],
+    ['แก้ไขล่าสุด', r.updatedAt ? thDateTime(r.updatedAt) : '']
+  ];
+  const tl = (r.history || []).map(h => {
+    const i = Math.max(0, (Number(h.step) || 1) - 1);
+    return `<div class="tl"><div class="tl-dot" style="background:${stepColor(i)}"></div><div>
+      <b>${esc(steps[i] || '')}</b> <span class="sub">· ${thDate(h.date)}${h.by ? ' · ' + esc(h.by) : ''}</span>
+      ${h.note ? `<div style="margin-top:2px">${esc(h.note)}</div>` : ''}
+      ${h.fileUrl ? `<div><a class="link" href="${esc(h.fileUrl)}" target="_blank" rel="noopener">📎 ${esc(h.fileName || 'เปิดไฟล์')}</a></div>` : ''}
+    </div></div>`;
+  }).join('');
+  openModal('รายละเอียดการลาศึกษาต่อ', `
+    <table class="tbl detail" style="min-width:0">${rows.filter(x => x[1] && x[1] !== '-').map(x => `<tr><th>${x[0]}</th><td>${x[1]}</td></tr>`).join('')}</table>
+    <h3 style="margin:18px 0 6px;font-size:16px">ประวัติขั้นตอน</h3>
+    <div>${tl || '<div class="sub">ยังไม่มีประวัติ</div>'}</div>
+    <div class="form-actions"><button class="btn btn-light" onclick="closeModal()">ปิด</button></div>`);
+}
+
+async function delStudy(id){
+  if (!(await confirmBox('ยืนยันการลบ', 'ยืนยันการลบรายการลาศึกษาต่อนี้?', 'ลบ', true, '🗑️', 'ไฟล์แนบทุกขั้นตอนจะถูกย้ายไปถังขยะ'))) return;
+  try { await call('deleteStudy', S.token, id); toast('ลบเรียบร้อย', 'ok'); loadStudy(); } catch (e) {}
+}
+
+function renderUsers(){
+  S.type = 'users'; S.list = [];
+  mainEl().innerHTML = `
+  <div class="head-row">
+    <h2 class="page-title" style="margin:0">จัดการผู้ใช้งาน</h2>
+    <button class="btn btn-pri" onclick="openUserForm()">+ เพิ่มผู้ใช้งาน</button>
+  </div>
+  <div class="stats" id="usStats"></div>
+  <div class="card">
+    <div class="toolbar">
+      <input id="uq" class="input grow" placeholder="ค้นหาชื่อผู้ใช้ / ชื่อ-สกุล / ตำแหน่ง / กลุ่มงาน" value="${esc(UF.q)}">
+      <select id="ur" class="input"><option value="">ทุกกลุ่มผู้ใช้</option>${Object.keys(S.cfg.roles).map(k => `<option value="${k}" ${UF.role === k ? 'selected' : ''}>${esc(S.cfg.roles[k])}</option>`).join('')}</select>
+    </div>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>ชื่อ-สกุล</th><th>ชื่อผู้ใช้</th><th>ตำแหน่ง</th><th>กลุ่มงาน</th><th>กลุ่มผู้ใช้ (สิทธิ์)</th><th>สถานะ</th><th>จัดการ</th>
+    </tr></thead><tbody id="usBody"><tr><td colspan="8" class="empty">กำลังโหลด...</td></tr></tbody></table></div>
+    <div class="footer-info" id="usCount"></div>
+  </div>`;
+  $('#uq').oninput = e => { UF.q = e.target.value; drawUsers(); };
+  $('#ur').onchange = e => { UF.role = e.target.value; drawUsers(); };
+  loadUsers();
+}
+
+async function loadUsers(){
+  try {
+    const list = await api('listUsers', S.token);
+    if (S.page !== 'users') return;
+    S.list = list || [];
+    drawUsers();
+  } catch (e) { handleErr(e); }
+}
+
+function setUF(role){ UF.role = UF.role === role ? '' : role; if ($('#ur')) $('#ur').value = UF.role; drawUsers(); }
+
+function drawUsers(){
+  if (!$('#usBody')) return;
+  $('#usStats').innerHTML = Object.keys(S.cfg.roles).map(k => `
+    <div class="stat ${UF.role === k ? 'sel' : ''}" style="border-left-color:${ROLE_COLOR[k]}" onclick="setUF('${k}')">
+      <div class="l">${ROLE_ICON[k]} ${esc(S.cfg.roles[k])}</div>
+      <div class="n" style="color:${ROLE_COLOR[k]}">${S.list.filter(u => u.role === k).length} <small>คน</small></div>
+      <div class="d">${esc(ROLE_DESC[k])}</div>
+    </div>`).join('');
+  const q = (UF.q || '').trim().toLowerCase();
+  const rows = S.list.filter(u => (!UF.role || u.role === UF.role) &&
+    (!q || [u.username, u.fullName, u.position, u.groupName].join(' ').toLowerCase().includes(q)));
+  $('#usBody').innerHTML = rows.length ? rows.map((u, i) => `<tr class="${u.active === 'ปิดใช้งาน' ? 'row-off' : ''}">
+    <td>${i + 1}</td>
+    <td><b>${esc(u.fullName || '-')}</b>${u.username === S.user.username ? ' <span class="badge b-purple">คุณ</span>' : ''}</td>
+    <td class="nowrap">${esc(u.username)}</td>
+    <td>${esc(u.position || '-')}</td>
+    <td>${esc(u.groupName || '-')}</td>
+    <td>${roleBadge(u.role)}</td>
+    <td>${u.active === 'ปิดใช้งาน' ? '<span class="badge b-gray">ปิดใช้งาน</span>' : '<span class="badge b-green">ใช้งาน</span>'}</td>
+    <td class="nowrap"><button class="btn btn-sm btn-light" data-u="${esc(u.username)}" onclick="openUserForm(this.dataset.u)">แก้ไข</button>
+      ${u.username !== S.user.username ? `<button class="btn btn-sm btn-del" data-u="${esc(u.username)}" onclick="delUser(this.dataset.u)">ลบ</button>` : ''}</td>
+  </tr>`).join('') : `<tr><td colspan="8" class="empty">ไม่พบผู้ใช้งาน</td></tr>`;
+  $('#usCount').textContent = `แสดง ${rows.length} จาก ${S.list.length} คน`;
+}
+
+function openUserForm(username){
+  const d = username ? S.list.find(x => x.username === username) : null;
+  const r = d || { role: 'user', active: 'ใช้งาน', groupName: '' };
+  const groups = (S.cfg.groups || []).slice();
+  if (r.groupName && groups.indexOf(r.groupName) < 0) groups.push(r.groupName);
+  openModal(d ? 'แก้ไขผู้ใช้งาน' : 'เพิ่มผู้ใช้งาน', `
+  <form id="usForm"><div class="form-grid">
+    <div><label>ชื่อผู้ใช้ (ภาษาอังกฤษ) <span class="req">*</span></label><input class="input" name="username" value="${esc(r.username || '')}" ${d ? 'readonly' : 'required'} placeholder="เช่น somchai.j"></div>
+    <div><label>รหัสผ่าน ${d ? '' : '<span class="req">*</span>'}</label><input type="password" class="input" name="password" ${d ? '' : 'required'} minlength="4" placeholder="${d ? 'เว้นว่าง = ไม่เปลี่ยน' : 'อย่างน้อย 4 ตัวอักษร'}" autocomplete="new-password"></div>
+    <div><label>ชื่อ-สกุล <span class="req">*</span></label><input class="input" name="fullName" required value="${esc(r.fullName || '')}" placeholder="เช่น นายสมชาย ใจดี"></div>
+    <div><label>ตำแหน่ง</label><input class="input" name="position" value="${esc(r.position || '')}" placeholder="เช่น ครู คศ.2"></div>
+    <div><label>กลุ่มงาน</label><select class="input" name="groupName"><option value="">- ไม่ระบุ -</option>${opts(groups, r.groupName)}</select></div>
+    <div><label>สถานะบัญชี</label><select class="input" name="active">${opts(['ใช้งาน', 'ปิดใช้งาน'], r.active)}</select></div>
+    <div class="full"><label>กลุ่มผู้ใช้ (สิทธิ์) <span class="req">*</span></label>
+      <select class="input" name="role" id="ufRole">${Object.keys(S.cfg.roles).map(k => `<option value="${k}" ${r.role === k ? 'selected' : ''}>${ROLE_ICON[k]} ${esc(S.cfg.roles[k])}</option>`).join('')}</select>
+      <div class="role-desc" id="ufDesc"></div></div>
+  </div>
+  <div class="form-actions">
+    <button type="button" class="btn btn-light" onclick="closeModal()">ยกเลิก</button>
+    <button type="submit" class="btn btn-pri">บันทึก</button>
+  </div></form>`);
+  const desc = () => { $('#ufDesc').textContent = ROLE_DESC[$('#ufRole'].value] || ''; };
+  $('#ufRole').onchange = desc; desc();
+  $('#usForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const data = {};
+    ['username','password','fullName','position','groupName','active','role'].forEach(k => data[k] = fd.get(k) || '');
+    data.isNew = !d;
+    try {
+      await call('saveUser', S.token, data);
+      closeModal(); toast(d ? 'บันทึกการแก้ไขเรียบร้อย' : 'เพิ่มผู้ใช้งานเรียบร้อย', 'ok'); loadUsers();
+    } catch (e) {}
+  };
+}
+
+async function delUser(username){
+  const u = S.list.find(x => x.username === username);
+  if (!(await confirmBox('ยืนยันการลบผู้ใช้', 'ลบผู้ใช้ "' + (u ? u.fullName : username) + '" ?', 'ลบ', true, '🗑️', 'หากต้องการเก็บประวัติไว้ แนะนำให้ "ปิดใช้งาน" แทนการลบ'))) return;
+  try { await call('deleteUser', S.token, username); toast('ลบผู้ใช้เรียบร้อย', 'ok'); loadUsers(); } catch (e) {}
+}
+
+function renderSend(){
+  S.type = 'mine'; S.list = [];
+  const u = S.user;
+  mainEl().innerHTML = `
+  <h2 class="page-title">ส่งหนังสือถึงกลุ่มงานบุคคล</h2>
+  <div class="card" style="margin-bottom:16px">
+    <h3>📨 แบบฟอร์มส่งหนังสือ ถึง ${esc(S.cfg.app.targetGroup)}</h3>
+    <form id="sendForm"><div class="form-grid">
+      <div><label>เลขที่หนังสือ</label><input class="input" name="docNo" placeholder="ถ้ามี"></div>
+      <div><label>ลงวันที่</label><input type="date" class="input" name="docDate" value="${today()}"></div>
+      <div><label>จาก (ผู้ส่ง/หน่วยงาน) <span class="req">*</span></label>
+        <input class="input" name="fromOrg" required value="${esc(u.fullName + (u.groupName ? ' (' + u.groupName + ')' : ''))}"></div>
+      <div><label>ชั้นความเร็ว</label><select class="input" name="speed">${opts(S.cfg.speeds, 'ปกติ')}</select></div>
+      <div class="full"><label>เรื่อง <span class="req">*</span></label><textarea class="input" name="subject" rows="2" required></textarea></div>
+      <div class="full"><label>ไฟล์แนบ (ไม่เกิน ${S.cfg.app.maxFileMb} MB)</label><input type="file" class="input" id="sFile"></div>
+      <div class="full"><label>หมายเหตุ / ข้อความถึงกลุ่มงาน</label><textarea class="input" name="note" rows="2"></textarea></div>
+    </div>
+    <div class="form-actions">
+      <button type="reset" class="btn btn-light">ล้างข้อมูล</button>
+      <button type="submit" class="btn btn-pri">ส่งหนังสือ</button>
+    </div></form>
+  </div>
+  <div class="card">
+    <h3>ประวัติการส่งหนังสือ${isStaff() ? ' (ทั้งหมด)' : 'ของฉัน'}</h3>
+    <div class="table-wrap"><table class="tbl"><thead><tr>
+      <th>#</th><th>วันที่ส่ง</th><th>เลขที่หนังสือ</th><th>จาก</th><th>เรื่อง</th><th>ชั้นความเร็ว</th><th>สถานะ</th><th>เลขรับ</th><th>ไฟล์แนบ</th><th>จัดการ</th>
+    </tr></thead><tbody id="sendBody"><tr><td colspan="10" class="empty">กำลังโหลด...</td></tr></tbody></table></div>
+  </div>`;
+
+  $('#sendForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const fd = new FormData(ev.target);
+    const data = {};
+    ['docNo','docDate','fromOrg','speed','subject','note'].forEach(k => data[k] = fd.get(k) || '');
+    let file;
+    try { file = await readFile($('#sFile')); } catch (e) { return toast(e.message, 'err'); }
+    try {
+      await call('submitToGroup', S.token, data, file);
+      ev.target.reset();
+      ev.target.querySelector('[name=docDate]').value = today();
+      ev.target.querySelector('[name=fromOrg]').value = u.fullName + (u.groupName ? ' (' + u.groupName + ')' : '');
+      toast('ส่งหนังสือเรียบร้อย (สถานะ: รอลงรับ)', 'ok');
+      reloadPage();
+    } catch (e) {}
+  };
+  loadMine();
+}
+
+async function loadMine(){
+  try {
+    const list = await api('mySubmissions', S.token);
+    if (S.page !== 'send') return;
+    S.list = list;
+    $('#sendBody').innerHTML = list.length ? list.map((r, i) => `<tr>
+      <td>${i + 1}</td><td class="nowrap">${thDateTime(r.createdAt)}</td><td class="nowrap">${esc(r.docNo || '-')}</td>
+      <td>${esc(r.fromOrg || '-')}</td><td><div class="subject">${esc(r.subject)}</div></td>
+      <td>${speedBadge(r.speed)}</td><td>${statusBadge(r.status)}</td><td class="nowrap">${esc(r.regNo || '-')}</td>
+      <td>${fileLink(r)}</td>
+      <td class="nowrap"><button class="btn btn-sm btn-light" onclick="viewDoc('${r.id}')">ดู</button>
+        ${isStaff() && r.status === 'รอลงรับ' ? `<button class="btn btn-sm btn-ok" onclick="receiveDoc('${r.id}')">ลงรับ</button>` : ''}</td>
+    </tr>`).join('') : `<tr><td colspan="10" class="empty">ไม่พบข้อมูล</td></tr>`;
+  } catch (e) { handleErr(e); }
+}
+</script>
+</body>
+</html>
